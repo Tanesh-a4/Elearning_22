@@ -1,0 +1,609 @@
+/* Container for the users table */
+.users {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Arial", sans-serif;
+}
+
+.users h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004d4d; /* Dark Cyan Shade */
+  font-size: 2rem;
+}
+
+/* Styling the table */
+.users table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.users table thead {
+  background-color: #008b8b; /* Dark Cyan */
+  color: white;
+}
+
+.users table th,
+.users table td {
+  text-align: left;
+  padding: 12px 15px;
+  font-size: 0.95rem;
+}
+
+.users table th {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.users table tbody tr:nth-child(odd) {
+  background-color: #f0f9f9; /* Light Cyan */
+}
+
+.users table tbody tr:hover {
+  background-color: #e0f2f2; /* Slightly darker light cyan */
+}
+
+.users table td {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Styling for the select dropdown */
+.users select {
+  padding: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #008b8b; /* Dark Cyan */
+  border-radius: 4px;
+  outline: none;
+  background-color: #fff;
+  color: #004d4d; /* Text shade for contrast */
+  cursor: pointer;
+}
+
+.users select:focus {
+  border-color: #004d4d; /* Darker Cyan */
+}
+
+/* Styling for the buttons */
+.common-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  color: rgb(255, 255, 255);
+  background-color: rgb(9, 58, 9); /* Dark Cyan */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 1.5vh;
+}
+
+.common-btn:hover {
+  background-color: #006666; /* Slightly darker Dark Cyan */
+}
+
+.common-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive table design */
+@media screen and (max-width: 768px) {
+  .users table thead {
+    display: none;
+  }
+
+  .users table,
+  .users table tbody,
+  .users table tr,
+  .users table td {
+    display: block;
+    width: 100%;
+  }
+
+  .users table tr {
+    margin-bottom: 10px;
+  }
+
+  .users table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .users table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #008b8b; /* Dark Cyan */
+  }
+}
+
+/* User Management Styles */
+.users-container {
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 70px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.users-header {
+  margin-bottom: 30px;
+}
+
+.users-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.users-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.total-users {
+  background-color: #fff;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #555;
+}
+
+.total-users strong {
+  color: #046a6a;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 16px;
+}
+
+.search-box input {
+  padding: 12px 15px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 300px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: #046a6a;
+  box-shadow: 0 0 0 3px rgba(4, 106, 106, 0.1);
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(4, 106, 106, 0.3);
+  border-radius: 50%;
+  border-top: 3px solid #046a6a;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Table Styling */
+.users-table-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.users-table th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: 600;
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 2px solid #ecf0f1;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.users-table th:hover {
+  background-color: #f1f3f5;
+}
+
+.sort-icon {
+  margin-left: 5px;
+  font-size: 12px;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+
+.sort-icon.active {
+  opacity: 1;
+  color: #046a6a;
+}
+
+.users-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #ecf0f1;
+  color: #444;
+}
+
+.users-table tbody tr:hover {
+  background-color: rgba(4, 106, 106, 0.04);
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+/* Role Badges */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-badge {
+  background-color: rgba(4, 106, 106, 0.15);
+  color: #046a6a;
+}
+
+.teacher-badge {
+  background-color: rgba(58, 83, 155, 0.15);
+  color: #3a539b;
+}
+
+.user-badge {
+  background-color: rgba(136, 136, 136, 0.15);
+  color: #555;
+}
+
+.role-icon {
+  font-size: 14px;
+}
+
+/* Role update section */
+.role-update {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.role-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.role-select:focus {
+  border-color: #046a6a;
+  box-shadow: 0 0 0 2px rgba(4, 106, 106, 0.1);
+}
+
+/* Buttons */
+.update-btn,
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.update-btn {
+  background-color: rgba(4, 106, 106, 0.1);
+  color: #046a6a;
+}
+
+.update-btn:hover {
+  background-color: rgba(4, 106, 106, 0.2);
+}
+
+.update-btn:disabled {
+  background-color: #f1f1f1;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Access Request */
+.access-request {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #c29204;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.no-request {
+  color: #aaa;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.request-cell {
+  white-space: nowrap;
+}
+
+/* No users message */
+.no-users {
+  text-align: center;
+  padding: 30px !important;
+  color: #888;
+  font-style: italic;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #f8f9fa;
+  border-color: #ccc;
+}
+
+.page-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.page-number {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-number.active {
+  background-color: #046a6a;
+  border-color: #046a6a;
+  color: #fff;
+}
+
+.page-number:not(.active):hover {
+  background-color: #f8f9fa;
+  border-color: #ccc;
+}
+
+/* Delete Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirm-modal {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirm-modal h3 {
+  color: #333;
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.confirm-modal p {
+  color: #555;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-btn {
+  padding: 10px 18px;
+  background-color: #f1f3f5;
+  color: #555;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #e9ecef;
+}
+
+.confirm-btn {
+  padding: 10px 18px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-btn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+  .search-box input {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .users-container {
+    padding: 20px 15px;
+  }
+
+  .users-meta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box,
+  .search-box input {
+    width: 100%;
+  }
+
+  .users-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .role-update {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .role-select {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-numbers {
+    display: none;
+  }
+
+  .pagination {
+    justify-content: space-between;
+  }
+}

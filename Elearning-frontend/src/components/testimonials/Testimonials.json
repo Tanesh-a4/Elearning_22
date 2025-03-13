@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Priya Sharma",
+    "position": "Web Development Student",
+    "message": "QuikLearn transformed my career path completely. The structured curriculum and hands-on projects helped me land my dream job as a front-end developer within just 3 months of completing my courses!",
+    "image": "https://i.pravatar.cc/150?img=57"
+  },
+  {
+    "id": 2,
+    "name": "Rahul Mehta",
+    "position": "Data Science Professional",
+    "message": "After trying several platforms, QuikLearn stands out with its exceptional quality content and supportive community. The instructors are industry professionals who provide real-world insights that you can't find elsewhere.",
+    "image": "https://i.pravatar.cc/150?img=69"
+  },
+  {
+    "id": 3,
+    "name": "Aisha Patel",
+    "position": "UX/UI Design Student",
+    "message": "As someone switching careers, I was nervous about learning design online. QuikLearn made the transition smooth with step-by-step courses and personalized feedback that helped build my confidence and portfolio.",
+    "image": "https://i.pravatar.cc/150?img=47"
+  },
+  {
+    "id": 4,
+    "name": "Vikram Singh",
+    "position": "Software Engineering Student",
+    "message": "The interactive coding exercises and challenging projects on QuikLearn pushed me to think creatively. I've learned more practical skills in two months here than in an entire year of traditional education.",
+    "image": "https://i.pravatar.cc/150?img=61"
+  }
+]

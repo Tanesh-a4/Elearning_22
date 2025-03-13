@@ -1,0 +1,211 @@
+/* Custom Logo Styling */
+#logo {
+  width: 150px; /* Increase width as needed */
+  max-height: 10vh; /* Ensure the height of the logo does not exceed navbar height */
+  object-fit: contain; /* This ensures the logo maintains its aspect ratio */
+  transform: scale(2);
+}
+
+/* Navbar Link Styling */
+.nav-link {
+  color: #00796b !important;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #004d40 !important;
+}
+
+/* Optional Background for Header */
+.navbar {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  transition: all 0.3s ease;
+}
+
+.navbar-scrolled {
+  padding: 10px 0;
+}
+
+/* Make the menu items bold */
+.navbar-nav .nav-link {
+  color: black !important; /* Default color */
+  font-weight: 600; /* Make text bold */
+  transition: color 0.3s ease; /* Smooth transition for color only */
+  padding-left: 20px; /* Increase space on the left */
+  padding-right: 20px; /* Increase space on the right */
+  font-size: large;
+}
+
+/* Remove underline on hover, keep only color change */
+.navbar-nav .nav-link:hover {
+  color: darkcyan !important; /* Change color to dark cyan */
+  text-decoration: none; /* Remove underline effect */
+}
+
+/* Optional: Adjust spacing between the menu items */
+.navbar-nav {
+  margin-left: 0;
+  padding-left: 0;
+  align-items: center;
+}
+
+/* Premium Header Styling */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+header.scrolled {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Logo Styling */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: auto;
+  width: 140px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.nav-item {
+  position: relative;
+  margin: 0 5px;
+}
+
+.nav-link {
+  color: #333 !important;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 16px !important;
+  transition: all 0.3s ease;
+  position: relative;
+  text-decoration: none; /* Ensure no underline */
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #046a6a;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.nav-link:hover {
+  color: #046a6a !important;
+  text-decoration: none; /* Explicitly remove underline */
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 20px;
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: #046a6a !important;
+  font-weight: 700;
+}
+
+/* Login Link with Special Styling */
+.login-link {
+  background-color: rgba(4, 106, 106, 0.1);
+  color: #046a6a !important;
+  border-radius: 50px;
+  padding: 8px 20px !important;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover,
+.login-link.active {
+  background-color: #046a6a;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(4, 106, 106, 0.2);
+}
+
+.login-link:hover::after,
+.login-link.active::after {
+  opacity: 0;
+}
+
+/* Mobile Navbar Styling */
+.navbar-toggler {
+  border: none;
+  padding: 8px;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(4, 106, 106, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+  }
+
+  .nav-item {
+    margin: 5px 0;
+  }
+
+  .nav-link {
+    padding: 12px 15px !important;
+    border-radius: 8px;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(4, 106, 106, 0.05);
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .login-link {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+/* For the login-link and active states, ensure no text decoration */
+.login-link:hover,
+.login-link.active,
+.nav-link.active {
+  text-decoration: none;
+}
+
+/* Also add this to override any potential Bootstrap defaults */
+.nav-link:hover,
+.nav-link:focus,
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  text-decoration: none !important;
+}

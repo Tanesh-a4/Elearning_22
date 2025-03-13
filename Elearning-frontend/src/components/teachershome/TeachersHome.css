@@ -1,0 +1,265 @@
+.home-teachers-section {
+  padding: 80px 20px;
+  background: linear-gradient(
+      135deg,
+      rgba(4, 106, 106, 0.9) 0%,
+      rgba(3, 80, 80, 0.95) 100%
+    ),
+    url("../../../public/images/bgback.jpg") center/cover no-repeat fixed;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-teachers-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.home-teachers-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.home-teachers-title {
+  color: white;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.home-teachers-title.home-animate-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-teachers-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 18px;
+  margin: 0 auto;
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.2s;
+}
+
+.home-teachers-subtitle.home-animate-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Teachers Grid */
+.home-teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+/* Teacher Cards */
+.home-teacher-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: transform 0.5s ease, box-shadow 0.3s ease, opacity 0.8s ease;
+}
+
+.home-teacher-card.home-animate-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-teacher-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Teacher Avatar */
+.home-teacher-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.home-teacher-avatar-placeholder {
+  width: 100px;
+  height: 100px;
+  background-color: #046a6a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(4, 106, 106, 0.3);
+}
+
+/* Teacher Info */
+.home-teacher-info {
+  text-align: center;
+}
+
+.home-teacher-name {
+  color: #333;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.home-teacher-role {
+  color: #046a6a;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* Teacher Stats */
+.home-teacher-stats {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 15px;
+}
+
+.home-teacher-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.home-stat-label {
+  font-size: 12px;
+  color: #777;
+  text-transform: uppercase;
+}
+
+/* No Teachers Message */
+.home-no-teachers {
+  grid-column: 1 / -1;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 40px;
+  color: white;
+}
+
+.home-no-teachers-icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.home-no-teachers p {
+  font-size: 18px;
+}
+
+/* View All Button */
+.home-view-all-container {
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.6s;
+}
+
+.home-view-all-container.home-animate-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-view-all-teachers {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  color: #046a6a;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.home-view-all-teachers svg {
+  transition: transform 0.3s ease;
+}
+
+.home-view-all-teachers:hover {
+  background-color: #046a6a;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.home-view-all-teachers:hover svg {
+  transform: translateX(5px);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .home-teachers-title {
+    font-size: 36px;
+  }
+
+  .home-teachers-section {
+    padding: 60px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-teachers-title {
+    font-size: 30px;
+  }
+
+  .home-teachers-subtitle {
+    font-size: 16px;
+  }
+
+  .home-teachers-grid {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+    margin: 0 auto 40px;
+  }
+
+  .home-teacher-card {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-teachers-title {
+    font-size: 24px;
+  }
+
+  .home-teachers-subtitle {
+    font-size: 14px;
+  }
+
+  .home-teachers-grid {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin: 0 auto 30px;
+  }
+
+  .home-teacher-card {
+    padding: 20px;
+  }
+}

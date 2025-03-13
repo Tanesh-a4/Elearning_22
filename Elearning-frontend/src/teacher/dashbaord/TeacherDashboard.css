@@ -1,0 +1,791 @@
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  margin-top: 80px;
+  padding: 20px;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card-dashboard {
+  flex: 1;
+  min-width: 250px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.h1,
+.h2 {
+  color: #495057;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Teacher Dashboard styles with 'td-' prefix for CSS isolation */
+
+.td-container {
+  --primary: #046a6a;
+  --primary-light: #00c9bc;
+  --primary-dark: #035151;
+  --secondary: #f7b500;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --border-radius: 10px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+
+  width: 100%;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.td-main {
+  padding: 24px;
+  background-color: #f5f7fb;
+  min-height: calc(100vh - 70px);
+}
+
+/* Header */
+.td-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.td-welcome h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin: 0 0 6px 0;
+}
+
+.td-welcome p {
+  color: var(--gray-600);
+  margin: 0;
+  font-size: 15px;
+}
+
+.td-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.td-create-course-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(4, 106, 106, 0.2);
+  transition: var(--transition);
+}
+
+.td-create-course-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(4, 106, 106, 0.3);
+}
+
+.td-btn-icon {
+  font-size: 16px;
+}
+
+/* Stats Cards */
+.td-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.td-stat-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.td-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-lg);
+}
+
+.td-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.td-courses-icon {
+  background-color: var(--primary);
+}
+
+.td-revenue-icon {
+  background-color: var(--success);
+}
+
+.td-students-icon {
+  background-color: var(--secondary);
+}
+
+.td-engagement-icon {
+  background-color: var(--info);
+}
+
+.td-stat-content {
+  flex-grow: 1;
+}
+
+.td-stat-content h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-600);
+}
+
+.td-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin: 4px 0;
+}
+
+.td-stat-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+/* Main Dashboard Grid */
+.td-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.td-chart-card,
+.td-courses-card,
+.td-activity-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.td-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.td-card-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.td-chart-card {
+  grid-column: span 2;
+}
+
+/* Chart Styles */
+.td-chart-container {
+  padding: 30px 20px 20px;
+  height: 300px;
+  position: relative;
+}
+
+.td-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 250px;
+  position: relative;
+  z-index: 2;
+}
+
+.td-chart-bar-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  position: relative;
+}
+
+.td-chart-bar {
+  width: 20px;
+  border-radius: 4px 4px 0 0;
+  transition: var(--transition);
+  position: relative;
+}
+
+.td-chart-bar:hover {
+  filter: brightness(0.9);
+}
+
+.td-chart-bar:hover .td-bar-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.td-revenue-bar {
+  background-color: rgba(4, 106, 106, 0.7);
+}
+
+.td-students-bar {
+  background-color: rgba(247, 181, 0, 0.7);
+}
+
+.td-max-bar {
+  background-color: var(--primary);
+}
+
+.td-bar-tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: var(--dark);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  z-index: 3;
+}
+
+.td-bar-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--dark) transparent transparent transparent;
+}
+
+.td-chart-bar-label {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--gray-600);
+  white-space: nowrap;
+}
+
+.td-chart-grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  z-index: 1;
+}
+
+.td-chart-grid-line {
+  height: 1px;
+  background-color: var(--gray-200);
+}
+
+.td-legend {
+  display: flex;
+  gap: 12px;
+}
+
+.td-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.td-legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.td-revenue-color {
+  background-color: var(--primary);
+}
+
+.td-students-color {
+  background-color: var(--secondary);
+}
+
+/* Course List */
+.td-courses-list {
+  padding: 0 20px 20px;
+}
+
+.td-course-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.td-course-item:last-child {
+  border-bottom: none;
+}
+
+.td-course-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.td-course-info {
+  flex-grow: 1;
+}
+
+.td-course-info h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-800);
+  line-height: 1.3;
+}
+
+.td-course-meta {
+  display: flex;
+  gap: 12px;
+  color: var(--gray-600);
+  font-size: 13px;
+}
+
+.td-course-students,
+.td-course-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.td-course-rating {
+  color: var(--warning);
+}
+
+.td-course-revenue {
+  font-weight: 600;
+  color: var(--success);
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.td-view-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.td-view-all:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Teaching Tips */
+.td-tips-container {
+  padding: 10px 20px 20px;
+}
+
+.td-tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.td-tip-item:last-child {
+  border-bottom: none;
+}
+
+.td-tip-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(4, 106, 106, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.td-tip-content h4 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.td-tip-content p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.5;
+}
+
+/* Loading states */
+.td-loading-container {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: var(--gray-600);
+}
+
+.td-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(4, 106, 106, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: td-spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+.td-chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  background-color: var(--gray-100);
+  color: var(--gray-500);
+  font-size: 14px;
+}
+
+/* Empty States */
+.td-empty-state {
+  padding: 30px;
+  text-align: center;
+  color: var(--gray-600);
+}
+
+.td-empty-state-icon {
+  font-size: 40px;
+  color: var(--gray-400);
+  margin-bottom: 15px;
+}
+
+.td-empty-state h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: var(--gray-700);
+}
+
+.td-empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Data Table */
+.td-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.td-data-table th,
+.td-data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.td-data-table th {
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 13px;
+  background-color: var(--gray-100);
+}
+
+.td-data-table td {
+  color: var(--gray-800);
+  font-size: 14px;
+}
+
+.td-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.td-data-table tr:hover td {
+  background-color: var(--gray-100);
+}
+
+/* No Data Message */
+.td-no-data {
+  padding: 30px;
+  text-align: center;
+  color: var(--gray-600);
+  font-size: 14px;
+}
+
+/* Error State */
+.td-error-state {
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(220, 53, 69, 0.05);
+  border-radius: var(--border-radius);
+  color: var(--danger);
+  margin: 20px 0;
+}
+
+.td-error-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Chart Placeholder */
+.td-chart-placeholder {
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-100);
+  color: var(--gray-500);
+  font-size: 14px;
+}
+
+/* Monthly Summary Card */
+.td-monthly-summary {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--gray-200);
+}
+
+.td-summary-item {
+  text-align: center;
+}
+
+.td-summary-label {
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-bottom: 5px;
+}
+
+.td-summary-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.td-summary-value.td-positive {
+  color: var(--success);
+}
+
+.td-summary-value.td-negative {
+  color: var(--danger);
+}
+
+/* Section Titles */
+.td-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 30px 0 15px;
+  color: var(--gray-800);
+}
+
+/* Status Indicators */
+.td-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.td-status-active {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success);
+}
+
+.td-status-pending {
+  background-color: rgba(247, 181, 0, 0.1);
+  color: var(--warning);
+}
+
+.td-status-inactive {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: var(--gray-600);
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .td-chart-card {
+    grid-column: auto;
+  }
+
+  .td-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .td-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .td-actions {
+    width: 100%;
+  }
+
+  .td-create-course-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .td-chart-container {
+    height: 250px;
+    padding: 20px 10px 20px;
+  }
+
+  .td-chart-bars {
+    height: 200px;
+  }
+
+  .td-chart-bar {
+    width: 16px;
+  }
+
+  .td-stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .td-stat-value {
+    font-size: 20px;
+  }
+
+  .td-monthly-summary {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .td-main {
+    padding: 16px;
+  }
+
+  .td-stats-grid {
+    gap: 16px;
+  }
+
+  .td-stats-grid,
+  .td-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .td-chart-bar {
+    width: 12px;
+  }
+
+  .td-stat-card {
+    padding: 15px;
+  }
+
+  .td-course-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .td-course-info h3 {
+    font-size: 14px;
+  }
+
+  .td-course-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .td-welcome h1 {
+    font-size: 20px;
+  }
+
+  .td-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .td-view-all {
+    margin-left: auto;
+  }
+}

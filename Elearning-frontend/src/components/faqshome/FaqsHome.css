@@ -1,0 +1,200 @@
+/* Clean up and update the CSS - keep only home prefixed classes and make it full-width */
+
+/* Full-width wrapper */
+.home-faq-wrapper {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 80px 0;
+}
+
+.home-faq-sections {
+  max-width: 1400px; /* Wider max-width */
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.home-faq-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.home-faq-title {
+  display: inline-block;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #046a6a;
+  position: relative;
+  margin-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.home-faq-title.home-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-faq-title:after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 4px;
+  background-color: #046a6a;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.home-faq-subtitle {
+  color: #555;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.home-faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.home-faq-accordion {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.home-faq-accordion:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+.home-faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.home-faq-question h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #046a6a;
+  margin: 0;
+}
+
+.home-faq-icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.home-icon-bar {
+  position: absolute;
+  background-color: #046a6a;
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  transition: transform 0.3s ease;
+}
+
+.home-icon-bar:first-child {
+  transform: translateY(-50%);
+}
+
+.home-icon-bar:last-child {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.home-faq-accordion.home-active .home-icon-bar:last-child {
+  transform: translateY(-50%) rotate(0);
+}
+
+.home-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+}
+
+.home-faq-accordion.home-active .home-faq-answer {
+  max-height: 300px;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.home-faq-answer p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.home-faq-footer {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.home-faq-footer p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.home-contact-btn {
+  background-color: #046a6a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(4, 106, 106, 0.2);
+  display: inline-block;
+  text-decoration: none;
+}
+
+.home-contact-btn:hover {
+  background-color: #035858;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(4, 106, 106, 0.3);
+}
+
+/* Add subtle pattern for more visual interest */
+.home-faq-wrapper {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23046a6a' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+@media (max-width: 768px) {
+  .home-faq-title {
+    font-size: 2.2rem;
+  }
+
+  .home-faq-wrapper {
+    padding: 50px 0;
+  }
+
+  .home-faq-sections {
+    padding: 0 20px;
+  }
+
+  .home-faq-question h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-faq-title {
+    font-size: 1.9rem;
+  }
+
+  .home-faq-wrapper {
+    padding: 40px 0;
+  }
+}

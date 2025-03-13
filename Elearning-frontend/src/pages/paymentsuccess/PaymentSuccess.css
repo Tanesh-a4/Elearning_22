@@ -1,0 +1,372 @@
+/* Payment Success styles with 'ps-' prefix for CSS isolation */
+.ps-container {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(4, 106, 106, 0.1) 0%,
+    rgba(0, 201, 188, 0.1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Main Card */
+.ps-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(4, 106, 106, 0.15);
+  width: 100%;
+  max-width: 560px;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Card Header */
+.ps-card-header {
+  background: linear-gradient(135deg, #046a6a 0%, #00c9bc 100%);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.ps-success-icon {
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  color: #046a6a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.ps-success-icon::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: ps-pulse 2s infinite;
+}
+
+@keyframes ps-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.ps-card-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.ps-subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Receipt Section */
+.ps-receipt {
+  padding: 30px;
+  background: white;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.ps-receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.ps-receipt-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #046a6a;
+}
+
+.ps-receipt-logo svg {
+  font-size: 24px;
+}
+
+.ps-receipt-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #555;
+  font-size: 14px;
+}
+
+.ps-icon {
+  color: #046a6a;
+}
+
+.ps-receipt-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ps-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ps-label {
+  color: #777;
+  font-size: 15px;
+}
+
+.ps-value {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-transaction-id {
+  color: #046a6a;
+  letter-spacing: 0.5px;
+}
+
+.ps-total-row {
+  border-bottom: none;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+.ps-success-text {
+  color: #4caf50;
+  font-weight: 700;
+}
+
+/* Action Buttons */
+.ps-actions {
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ps-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+
+.ps-primary-button {
+  background: linear-gradient(135deg, #046a6a 0%, #00c9bc 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(4, 106, 106, 0.25);
+}
+
+.ps-primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(4, 106, 106, 0.35);
+}
+
+.ps-secondary-button {
+  background: rgba(4, 106, 106, 0.1);
+  color: #046a6a;
+}
+
+.ps-secondary-button:hover {
+  background: rgba(4, 106, 106, 0.15);
+}
+
+.ps-button-icon {
+  transition: transform 0.3s ease;
+}
+
+.ps-primary-button:hover .ps-button-icon {
+  transform: translateX(4px);
+}
+
+/* Error Card */
+.ps-error-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(4, 106, 106, 0.15);
+  width: 100%;
+  max-width: 500px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.ps-error-card h2 {
+  color: #333;
+  margin: 0 0 15px;
+}
+
+.ps-error-card p {
+  color: #666;
+  margin: 0 0 25px;
+}
+
+/* Canvas Confetti styles don't need custom CSS as they're handled by the library */
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .ps-card {
+    border-radius: 15px;
+  }
+
+  .ps-card-header {
+    padding: 30px 15px;
+  }
+
+  .ps-success-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 35px;
+  }
+
+  .ps-success-icon::after {
+    width: 80px;
+    height: 80px;
+  }
+
+  .ps-card-header h1 {
+    font-size: 24px;
+  }
+
+  .ps-subtitle {
+    font-size: 15px;
+  }
+
+  .ps-receipt {
+    padding: 20px;
+  }
+
+  .ps-receipt-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ps-actions {
+    padding: 20px;
+  }
+
+  .ps-button {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+
+/* Additional animation for background decoration */
+.ps-container::before,
+.ps-container::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.ps-container::before {
+  background: radial-gradient(
+    circle,
+    rgba(4, 106, 106, 0.15) 0%,
+    rgba(0, 201, 188, 0) 70%
+  );
+  top: -100px;
+  right: -100px;
+  animation: ps-float 8s infinite ease-in-out;
+}
+
+.ps-container::after {
+  background: radial-gradient(
+    circle,
+    rgba(0, 201, 188, 0.15) 0%,
+    rgba(4, 106, 106, 0) 70%
+  );
+  bottom: -100px;
+  left: -100px;
+  animation: ps-float 8s infinite ease-in-out reverse;
+}
+
+@keyframes ps-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -30px);
+  }
+}
+
+.payment-success-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+  background-color: #f5f5f5;
+
+  .success-message {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+  }
+
+  h2 {
+    font-size: 24px;
+    color: darkcyan;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    color: darkcyan;
+    margin-bottom: 20px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

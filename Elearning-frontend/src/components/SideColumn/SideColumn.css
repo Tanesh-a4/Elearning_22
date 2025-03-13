@@ -1,0 +1,207 @@
+/* SideColumn styling tailored for My Courses page */
+.side-column {
+  width: 100%;
+  max-width: 300px;
+  max-height: 700px;
+  background-color: #fff; /* Soft off-white background */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Space between filter sections */
+  transition: all 0.3s ease;
+}
+
+.side-column h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: center;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.filter-icon {
+  color: #046a6a;
+  font-size: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Space between labels */
+}
+
+.filter-group h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #046a6a;
+  margin: 0;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(4, 106, 106, 0.15); /* Soft cyan underline */
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-size: 15px;
+  color: #444;
+}
+
+.checkbox-label:hover {
+  background-color: rgba(4, 106, 106, 0.05);
+}
+
+.checkbox-label.selected {
+  background-color: rgba(4, 106, 106, 0.1);
+  color: #046a6a;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-custom {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background-color: #fff;
+  border: 2px solid rgba(4, 106, 106, 0.4);
+  border-radius: 4px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.checkbox-label input:checked ~ .checkbox-custom {
+  background-color: #046a6a;
+  border-color: #046a6a;
+}
+
+.check-icon {
+  color: #fff;
+  font-size: 11px;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper:after {
+  content: "▼";
+  font-size: 12px;
+  color: #046a6a;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 10px 12px;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #046a6a;
+  box-shadow: 0 0 0 2px rgba(4, 106, 106, 0.15);
+}
+
+.reset-filters {
+  margin-top: auto;
+  padding: 10px;
+  background-color: transparent;
+  color: #046a6a;
+  border: 1px solid rgba(4, 106, 106, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-filters:hover {
+  background-color: rgba(4, 106, 106, 0.1);
+  border-color: #046a6a;
+}
+
+.cart-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cart-button button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #006400; /* Green button */
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 100, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cart-button button:hover {
+  background-color: #004d00; /* Darker green on hover */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .side-column {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .side-column h3 {
+    font-size: 1.2rem;
+  }
+
+  .filter-group select,
+  .cart-button button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+}

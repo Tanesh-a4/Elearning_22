@@ -1,0 +1,288 @@
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  margin-top: 80px;
+  padding: 20px;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  flex: 1;
+  min-width: 250px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+}
+
+.h1,
+.h2 {
+  color: #495057;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 2px solid #13ece8;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  display: flex; /* Arrange charts side by side */
+  justify-content: center; /* Center align the charts */
+  align-items: flex-start; /* Align charts to the top */
+  gap: 20px; /* Add spacing between the charts */
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  margin: 40px 0;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-box {
+  flex: 1 1 40%; /* Reduce size of each chart container */
+  max-width: 350px; /* Limit the maximum width of each chart */
+  min-width: 250px; /* Set a minimum width for responsiveness */
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.chart-box h2 {
+  font-size: 18px; /* Slightly smaller heading */
+  margin-bottom: 10px;
+  color: #495057;
+}
+
+canvas {
+  width: 100%; /* Ensure the chart fits within its container */
+  height: 200px; /* Explicitly reduce the height of the chart */
+  max-width: 300px; /* Cap the chart width to avoid oversizing */
+}
+
+.dashboard-container {
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 70px); /* Adjust based on your header height */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.dashboard-subtitle {
+  color: #666;
+  font-size: 16px;
+}
+
+/* Stats Cards */
+.stats-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.stat-card {
+  flex: 1 1 240px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+  color: white;
+}
+
+.course-icon {
+  background-color: #046a6a;
+}
+
+.lecture-icon {
+  background-color: #058d8d;
+}
+
+.user-icon {
+  background-color: #06b4b4;
+}
+
+.revenue-icon {
+  background-color: #07dcdc;
+}
+
+.stat-details {
+  flex: 1;
+}
+
+.stat-details h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+/* Charts Container */
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+}
+
+.chart-panel {
+  flex: 1 1 400px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.chart-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.chart-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.chart-info {
+  font-size: 14px;
+  color: #777;
+}
+
+.chart-body {
+  padding: 25px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bar-chart {
+  height: 350px;
+}
+
+canvas {
+  max-width: 100%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px;
+  }
+
+  .stats-cards {
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin-right: 15px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .chart-body {
+    height: 250px;
+  }
+
+  .bar-chart {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .stat-card {
+    flex: 1 0 100%;
+    padding: 15px;
+  }
+
+  .chart-header {
+    padding: 15px;
+  }
+
+  .chart-body {
+    padding: 15px;
+    height: 200px;
+  }
+
+  .bar-chart {
+    height: 250px;
+  }
+}
