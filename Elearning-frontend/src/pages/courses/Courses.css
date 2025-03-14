@@ -4,11 +4,13 @@
   justify-content: space-between;
   padding: 20px;
   background-color: darkcyan;
+  margin-top: 6%;
 }
 
 .crs-main-content {
   /* padding: 80px 0; */
   text-align: center;
+  margin-top: 2%;
   min-height: 60vh;
   width: 75%; /* Set width to 75% to make room for the sidebar */
 }
