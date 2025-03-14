@@ -25,7 +25,8 @@ const TeacherDashboard = () => {
   const [monthlyStats, setMonthlyStats] = useState([]);
   const [topCourses, setTopCourses] = useState([]);
   const [error, setError] = useState(null);
-
+  console.log(teacherDashboardData);
+  
   useEffect(() => {
     if (user === undefined) return; // Wait for user to load
 
@@ -279,11 +280,11 @@ useEffect(() => {
                       {teacherDashboardData?.totalStudents || 0}
                     </div>
                     <p className="td-stat-desc">
-                      Enrolled learners
+                      Learners Till Date
                     </p>
                   </div>
                 </div>
-
+{/* 
                 <div className="td-stat-card">
                   <div className="td-stat-icon td-engagement-icon">
                     <FaChartLine />
@@ -298,7 +299,7 @@ useEffect(() => {
                       Active this month
                     </p>
                   </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>

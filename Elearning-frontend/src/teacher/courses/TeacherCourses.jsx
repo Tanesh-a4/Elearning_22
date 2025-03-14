@@ -4,6 +4,7 @@ import Layout from "../../admin/Utils/Layout";
 import { CourseData } from "../../context/CourseContext";
 import Report from "./Report";
 import "./TeacherCourses.css";
+import { server } from "../../index";
 import { 
   FaPlus, 
   FaChartLine, 
@@ -15,9 +16,12 @@ import {
   FaCloudUploadAlt
 } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { UserData } from "../../context/UserContext";
+import axios from "axios";
 
 const TeacherCourses = () => {
   const navigate = useNavigate();
+  const { courses, fetchCourses } = CourseData();
   const { userId } = useParams(); // Using useParams to get the userId
   const [showReport, setShowReport] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -26,13 +30,17 @@ const TeacherCourses = () => {
   
   // Fetch teacher courses using fetchMyCourse
   const { 
-    mycourse, // Renamed from teacherCourses
-    loading, 
-    fetchMyCourse, // Renamed from fetchTeacherCourses
+   // Renamed from teacherCourses //userdata
+    loading, //userdata
+    fetchMyCourse, // Renamed from fetchTeacherCourses // course data
     deleteCourse,
     deleteLoading 
   } = CourseData();
+const {teacherDashboardData, user, fetchTeacherDashboard} = UserData();
+console.log(teacherDashboardData)
 
+const mycourse = teacherDashboardData?.courses;
+console.log(mycourse)
   // Fetch courses when component mounts
   useEffect(() => {
     fetchMyCourse();
@@ -51,19 +59,21 @@ const TeacherCourses = () => {
     setCourseToDelete(course);
     setShowDeleteModal(true);
   };
-
-  const handleDeleteCourse = async () => {
+console.log(mycourse[0].id)
+  const deleteHandler = async (id) => {
     try {
-      await deleteCourse(courseToDelete._id);
-      toast.success("Course deleted successfully");
-      setShowDeleteModal(false);
-      setCourseToDelete(null);
-      fetchMyCourse(); // Refetch courses after deletion
+      const { data } = await axios.delete(`${server}/api/course/${id}`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
+
+      toast.success(data.message);
+      fetchCourses();
     } catch (error) {
-      toast.error("Failed to delete course");
+      toast.error(error.response.data.message);
     }
   };
-
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
     setCourseToDelete(null);
@@ -94,7 +104,6 @@ const TeacherCourses = () => {
       currency: 'USD',
     }).format(price);
   };
-
   return (
     <Layout>
       <div className="tc-container">
@@ -116,7 +125,7 @@ const TeacherCourses = () => {
               <div className="tc-course-card" key={course._id}>
                 <div className="tc-card-image-container">
                   <img 
-                    src={course.imageUrl || "https://placehold.co/600x400?text=Course+Image"} 
+                     src={course.image ? `${server}/${course.image}` : "https://placehold.co/100x60?text=Course"}
                     alt={course.title} 
                     className="tc-card-image" 
                   />
@@ -155,13 +164,16 @@ const TeacherCourses = () => {
                     </button>
                     <button 
                       className="tc-btn tc-btn-primary" 
-                      onClick={() => handleEditCourse(course._id)}
+                      onClick={() => navigate(`/course/study/${course._id}`)}
                     >
-                      <FaEdit className="tc-action-icon" /> Edit
+                      <FaEdit className="tc-action-icon" /> Add Lecture
                     </button>
                     <button 
                       className="tc-btn tc-btn-danger" 
-                      onClick={() => confirmDelete(course)}
+                     onClick={() => {
+                      console.log(course._id);
+                      
+                      deleteHandler(course._id)}}
                     >
                       <FaTrashAlt className="tc-action-icon" /> Delete
                     </button>
@@ -198,7 +210,7 @@ const TeacherCourses = () => {
                   <button className="tc-cancel-btn" onClick={closeDeleteModal}>Cancel</button>
                   <button 
                     className="tc-btn tc-btn-danger" 
-                    onClick={handleDeleteCourse}
+                 
                     disabled={deleteLoading}
                   >
                     {deleteLoading ? (
