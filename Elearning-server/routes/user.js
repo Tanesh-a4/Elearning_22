@@ -1,7 +1,7 @@
 import express from 'express';
 import { loginUser, myProfile, register, verifyUser } from '../controllers/user.js';
 import { isAuth, isTeacher } from '../middlewares/isAuth.js';
-import { addProgress, getYourProgress } from '../controllers/course.js';
+import { addProgress, getUserCourses, getYourProgress } from '../controllers/course.js';
 import { getAllTeachers, teachersCourses, deleteCourse } from '../controllers/user.js';
 import { teacherDashboard } from '../controllers/user.js';
 import { User } from "../models/user.js";
@@ -20,6 +20,7 @@ router.get("/user/teachers", getAllTeachers);
 router.get("/teacher/:id/dashboard", isAuth, isTeacher, teacherDashboard);
 router.get("/teacher/:id/courses", isAuth, isTeacher, teachersCourses);
 router.delete("/teacher/course/:id", isAuth, isTeacher, deleteCourse);
+router.get("/user/:id/courses", isAuth, getUserCourses);
 
 router.post("/unenroll", TryCatch(async (req, res) => {
   const { courseId , user} = req.body;

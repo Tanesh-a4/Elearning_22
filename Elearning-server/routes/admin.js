@@ -11,7 +11,7 @@ router.post("/course/new",isAuth,isAdminOrTeacher,uploadFiles,createCourse);
 router.post("/course/:id", isAuth, isAdminOrTeacher, uploadFiles, addLectures);
 router.delete("/lecture/:id", isAuth, isAdminOrTeacher, deleteLecture);
 
-router.delete("/course/:id", isAuth, isAdmin, deleteCourse);
+router.delete("/course/:id", isAuth, isAdminOrTeacher, deleteCourse);
 router.get("/stats",isAuth,isAdmin,getAllstats);
 router.put("/user/:id", isAuth, updateRole);
 router.get("/users", isAuth, isAdmin, getAllUser);

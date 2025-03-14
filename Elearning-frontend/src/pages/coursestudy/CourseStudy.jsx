@@ -110,13 +110,14 @@ const CourseStudy = ({ user }) => {
               }}
             />
           </div>
-
           <div className="cs-actions">
-            <Link to={`/lectures/${course._id}`} className="cs-primary-btn">
-              <FaPlayCircle className="cs-btn-icon" />
-              Continue Learning
-            </Link>
-          </div>
+  <Link to={`/lectures/${course._id}`} className="cs-primary-btn">
+    <FaPlayCircle className="cs-btn-icon" />
+    {user?.role === "admin" || (user?.role === "teacher" && course?.owner === user?._id) 
+      ? "Add Lectures" 
+      : "Continue Learning"}
+  </Link>
+</div>
         </div>
 
         <div className="cs-main-content">

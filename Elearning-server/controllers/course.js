@@ -27,6 +27,15 @@ export const getSingleCourse = TryCatch (async(req,res)=>{
 
 });
 
+export const getUserCourses = TryCatch(async (req, res) => {
+  const user = await User.findById(req.params.id).populate("subscription");
+
+  if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  res.status(200).json({ success: true, courses: user.subscription });
+});
 
 export const fetchLectures = TryCatch (async(req,res)=>{
     const lectures = await Lecture.find({course: req.params.id});
@@ -49,7 +58,7 @@ export const fetchLectures = TryCatch (async(req,res)=>{
 export const fetchlecutre = TryCatch (async(req,res)=>{
     const lecture = await Lecture.findById(req.params.id);
     const user = await User.findById(req.user._id);
-    if(user.role == "admin"){
+    if(user.role == "admin" || user.role == "teacher"){
         return res.json({
             lecture
         })

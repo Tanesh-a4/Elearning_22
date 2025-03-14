@@ -147,7 +147,7 @@ export const getAllTeachers = TryCatch(async (req, res) => {
     
     console.log(teacherName)
     // Fetch courses created by the teacher's name
-    const courses = await Courses.find({ createdBy: teacherName });
+    const courses = await Courses.find({ owner: teacherId });
    
 
     let totalStudents = 0;

@@ -182,19 +182,9 @@ const Account = ({ user }) => {
               <h3>Explore Courses</h3>
             </div>
             
-            <div className="action-card" onClick={() => navigate(`/${user?._id}/bookmarks`)}>
-              <div className="action-icon">
-                <FaBookmark />
-              </div>
-              <h3>Saved Courses</h3>
-            </div>
+           
             
-            <div className="action-card" onClick={() => navigate(`/${user?._id}/certificates`)}>
-              <div className="action-icon">
-                <FaCertificate />
-              </div>
-              <h3>Certificates</h3>
-            </div>
+            
             
             {user?.designation !== "teacher" && user?.role === "user" && (
               <div className="action-card" onClick={applyToBecomeTeacher}>
