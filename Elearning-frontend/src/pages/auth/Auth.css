@@ -25,7 +25,7 @@
       rgba(0, 36, 61, 0.9) 100%
     ),
     url("../../../public/images/bgback.jpg") center/cover no-repeat fixed;
-  padding: 40px 20px;
+  padding: 70px 20px;
   box-sizing: border-box;
 }
 
@@ -48,6 +48,7 @@
   z-index: 10;
   overflow: hidden;
   box-sizing: border-box;
+  margin-top: 100px;
 }
 
 /* Header section */

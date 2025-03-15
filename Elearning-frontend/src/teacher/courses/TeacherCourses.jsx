@@ -105,7 +105,9 @@ console.log(mycourse[0].id)
     }).format(price);
   };
   return (
-    <Layout>
+   <>
+    <div className="tc-layout">
+    <Layout className="tc-layout" role="Teacher">
       <div className="tc-container">
         <div className="tc-header">
           <h1>My Courses</h1>
@@ -240,6 +242,8 @@ console.log(mycourse[0].id)
         )}
       </div>
     </Layout>
+    </div>
+    </>
   );
 };
 

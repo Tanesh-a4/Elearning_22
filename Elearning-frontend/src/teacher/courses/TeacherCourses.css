@@ -247,13 +247,15 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
   --transition: all 0.3s ease;
-
+  margin-top: 5%;
   padding: 30px;
   background-color: var(--background);
   min-height: calc(100vh - 70px);
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
-
+.tc-layout {
+  margin-top: 8.3%;
+}
 /* Page Header */
 .tc-header {
   display: flex;

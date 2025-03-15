@@ -232,4 +232,61 @@ export const checkout = TryCatch(async (req, res) => {
     });
   });
   
+
+  export const getMonthlyStats = async (req, res) => {
+    try {
+        const teacherId = req.user.id; // Get teacher ID from token
+
+        // Find all courses owned by this teacher
+        const teacherCourses = await Courses.find({ owner: teacherId }).select("_id");
+        if (!teacherCourses.length) {
+            return res.status(404).json({ message: "No courses found for this teacher." });
+        }
+
+        const courseIds = teacherCourses.map(course => course._id);
+
+        // Aggregate payments by month
+        const monthlyStats = await Payment.aggregate([
+            {
+                $match: { course: { $in: courseIds } }
+            },
+            {
+                $group: {
+                    _id: { 
+                        year: { $year: "$createdAt" }, 
+                        month: { $month: "$createdAt" }
+                    },
+                    totalRevenue: { $sum: "$amountPaid" },
+                    transactionCount: { $sum: 1 }
+                }
+            },
+            { $sort: { "_id.year": -1, "_id.month": -1 } }
+        ]);
+
+        // Generate last 6 months' data
+        const currentDate = new Date();
+        const lastSixMonths = [];
+        for (let i = 5; i >= 0; i--) {
+            const date = new Date();
+            date.setMonth(currentDate.getMonth() - i);
+            const month = date.toLocaleString("default", { month: "short" });
+
+            const record = monthlyStats.find(
+                stat => stat._id.month === date.getMonth() + 1 && stat._id.year === date.getFullYear()
+            );
+
+            lastSixMonths.push({
+                month,
+                revenue: record ? record.totalRevenue : 0,
+                transactions: record ? record.transactionCount : 0
+            });
+        }
+
+        res.status(200).json({ monthlyStats: lastSixMonths });
+
+    } catch (error) {
+        console.error("Error fetching monthly stats:", error);
+        res.status(500).json({ message: "Server error. Please try again." });
+    }
+};
   
