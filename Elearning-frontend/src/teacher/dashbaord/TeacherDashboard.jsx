@@ -305,7 +305,7 @@ useEffect(() => {
           </div>
 
           <div className="td-dashboard-grid">
-            <div className="td-chart-card">
+            {/* <div className="td-chart-card">
               <div className="td-card-header">
                 <h2>Monthly Performance</h2>
                 <div className="td-legend">
@@ -407,7 +407,7 @@ useEffect(() => {
               ) : (
                 <EmptyState message="You haven't created any courses yet. Click 'New Course' to get started!" />
               )}
-            </div>
+            </div> */}
 
             <div className="td-activity-card">
               <div className="td-card-header">
