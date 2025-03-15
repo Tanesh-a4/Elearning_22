@@ -40,6 +40,7 @@ const {teacherDashboardData, user, fetchTeacherDashboard} = UserData();
 console.log(teacherDashboardData)
 
 const mycourse = teacherDashboardData?.courses;
+console.log(teacherDashboardData)
 console.log(mycourse)
   // Fetch courses when component mounts
   useEffect(() => {
@@ -59,7 +60,7 @@ console.log(mycourse)
     setCourseToDelete(course);
     setShowDeleteModal(true);
   };
-console.log(mycourse[0].id)
+console.log(mycourse?.[0]?.id)
   const deleteHandler = async (id) => {
     try {
       const { data } = await axios.delete(`${server}/api/course/${id}`, {
@@ -147,7 +148,7 @@ console.log(mycourse[0].id)
                   <div className="tc-card-meta">
                     <div className="tc-meta-item">
                       <FaUsers className="tc-meta-icon" />
-                      <span>{course.enrolledStudents || 0} Students</span>
+                      <span>{course.subscriptions || 0} Students</span>
                     </div>
                     <div className="tc-meta-item">
                       <FaClock className="tc-meta-icon" />
@@ -235,11 +236,14 @@ console.log(mycourse[0].id)
 
         {/* Report Component */}
         {showReport && selectedCourse && (
-          <Report 
-            course={selectedCourse}
-            closeReport={closeReport}
-          />
-        )}
+  <div className="popup-overlay">
+    <div className="popup-content">
+      <Report course={selectedCourse} closeReport={closeReport} />
+      
+    </div>
+  </div>
+)}
+
       </div>
     </Layout>
     </div>

@@ -128,37 +128,35 @@ export const getAllTeachers = TryCatch(async (req, res) => {
   
     res.json({ teachers });
   });
-
+ 
   export const teacherDashboard = TryCatch(async (req, res) => {
-    const teacherId = req.params.id; // Get the teacher's ID from the route parameter
-    
-    // Fetch the teacher's name using the ID
-    const teacher = await User.findById(teacherId); 
-    // console.log(teacher)
+    const teacherId = req.params.id;
+
+    const teacher = await User.findById(teacherId);
     if (!teacher) {
         return res.status(404).json({
             success: false,
             message: "Teacher not found",
         });
     }
-    console.log(teacher)
 
-    const teacherName = teacher.name; // Extract the name of the teacher
-    
-    console.log(teacherName)
-    // Fetch courses created by the teacher's name
     const courses = await Courses.find({ owner: teacherId });
-   
 
-    let totalStudents = 0;
-    let totalRevenue = 0;
+    // Fetch subscriptions per course using the same logic as generateCourseReport
+    const coursesWithSubscriptions = await Promise.all(
+        courses.map(async (course) => {
+            const subscribedUsers = await User.find({ subscription: course._id }).select("_id");
 
-    for (const course of courses) {
-        const studentsEnrolled = await Progress.find({ course: course._id }).countDocuments();
-        totalStudents += studentsEnrolled;
-        totalRevenue += studentsEnrolled * course.price;
-    }
-    
+            return {
+                ...course.toObject(),
+                subscriptions: subscribedUsers.length, // Attach subscriptions count
+            };
+        })
+    );
+
+    // Calculate total students and revenue using the same logic
+    const totalStudents = coursesWithSubscriptions.reduce((sum, course) => sum + course.subscriptions, 0);
+    const totalRevenue = coursesWithSubscriptions.reduce((sum, course) => sum + course.subscriptions * course.price, 0);
 
     res.json({
         success: true,
@@ -166,10 +164,11 @@ export const getAllTeachers = TryCatch(async (req, res) => {
             totalCourses: courses.length,
             totalStudents,
             totalRevenue,
-            courses,
+            courses: coursesWithSubscriptions,
         },
     });
 });
+
 
 export const teachersCourses = TryCatch(async (req, res) => {
     const teacherId = req.params.id;

@@ -39,6 +39,7 @@ export const getUserCourses = TryCatch(async (req, res) => {
 
 export const fetchLectures = TryCatch (async(req,res)=>{
     const lectures = await Lecture.find({course: req.params.id});
+    console.log(lectures)
     const user = await User.findById(req.user._id);
     if(user.role == "admin" || user.role == "teacher"){
         return res.json({
@@ -200,37 +201,42 @@ export const checkout = TryCatch(async (req, res) => {
     // Ensure the course exists and fetch its details
     const course = await Courses.findById(courseId).populate('owner', 'name email');
     if (!course) {
-      return res.status(404).json({ message: "Course not found." });
+        return res.status(404).json({ message: "Course not found." });
     }
-  
+
     // Get users subscribed to the course
     const subscribedUsers = await User.find({ subscription: courseId }).select("name email");
-  
+
     if (!subscribedUsers.length) {
-      return res.status(404).json({ message: "No users subscribed to this course." });
+        return res.status(404).json({ message: "No users subscribed to this course." });
     }
-  
+
     // Fetch progress data for each subscribed user
     const progressData = await Promise.all(
-      subscribedUsers.map(async (user) => {
-        const progress = await Progress.findOne({ course: courseId, user: user._id })
-          .populate("completedLectures", "title")
-          .select("completedLectures");
-  
-        return {
-          name: user.name,
-          email: user.email,
-          completedLectures: progress?.completedLectures.length || 0,
-        };
-      })
+        subscribedUsers.map(async (user) => {
+            const progress = await Progress.findOne({ course: courseId, user: user._id })
+                .populate("completedLectures", "title")
+                .select("completedLectures");
+
+            return {
+                name: user.name,
+                email: user.email,
+                completedLectures: progress?.completedLectures.length || 0,
+            };
+        })
     );
-  
+
+    // Calculate total revenue
+    const totalRevenue = subscribedUsers.length * course.price;
+
     res.json({
-      courseId,
-      totalSubscribers: subscribedUsers.length,
-      progress: progressData,
+        courseId,
+        totalSubscribers: subscribedUsers.length,
+        totalRevenue,
+        progress: progressData,
     });
-  });
+});
+
   
 
   export const getMonthlyStats = async (req, res) => {

@@ -264,3 +264,29 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+
+.tc-chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.tc-chart-item {
+  width: calc(33.33% - 20px); /* Ensures 3 charts per row */
+  max-width: 200px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .tc-chart-item {
+    width: calc(50% - 20px); /* 2 per row on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .tc-chart-item {
+    width: 100%; /* 1 per row on smaller screens */
+  }
+}
