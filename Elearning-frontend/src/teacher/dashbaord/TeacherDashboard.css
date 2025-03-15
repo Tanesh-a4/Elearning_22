@@ -63,7 +63,7 @@ h2 {
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   --box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
-
+margin-top: 8%;
   width: 100%;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }

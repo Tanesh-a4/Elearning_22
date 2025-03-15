@@ -217,7 +217,7 @@ useEffect(() => {
 
   return (
     <div className="td-container">
-      <Layout>
+      <Layout role="Teacher">
         <div className="td-main">
           <div className="td-header">
             <div className="td-welcome">

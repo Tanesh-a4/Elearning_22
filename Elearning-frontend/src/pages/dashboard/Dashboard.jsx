@@ -5,6 +5,7 @@ import { UserData } from "../../context/UserContext";
 import CourseCard from "../../components/coursecard/CourseCard";
 import { Link } from "react-router-dom";
 import { FaGraduationCap, FaBookReader, FaChartLine, FaLaptop } from "react-icons/fa";
+import Layout from "../../admin/Utils/Layout";
 
 const Dashboard = () => {
     const { userCourses, fetchUserCourses } = CourseData();
@@ -15,7 +16,9 @@ const Dashboard = () => {
     const totalCourses = inProgressCourses + completedCourses;
 
     return (
-        <div className="db-container">
+        <div style={{marginTop: "100px"}}>
+        <Layout role="user">
+            <div className="db-container">
             <div className="db-header">
                 <div className="db-welcome">
                     <h1 className="db-title">My Learning Dashboard</h1>
@@ -83,6 +86,8 @@ const Dashboard = () => {
                     </div>
                 )}
             </div>
+        </div>
+        </Layout>
         </div>
     );
 };
