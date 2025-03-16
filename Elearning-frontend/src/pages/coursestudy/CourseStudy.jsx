@@ -5,12 +5,23 @@ import { CourseData } from "../../context/CourseContext";
 import { server } from "../../index";
 import { FaBook, FaClock, FaUser, FaCalendarAlt, FaPlayCircle, FaCheck } from "react-icons/fa";
 import Loading from "../../components/loading/Loading";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { FaPlay, FaPlus, FaTrash, FaTimes, FaUpload, FaVideo } from "react-icons/fa";
 
 const CourseStudy = ({ user }) => {
+  const [lectures, setLectures] = useState([]);
   const params = useParams();
   const { fetchCourse, course } = CourseData();
+  console.log(course._id)
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState([]);
+  const [completed, setCompleted] = useState(0);
+  const [completedLec, setCompletedLec] = useState(0);
+  const [lectLength, setLectLength] = useState(0);
+  const [lecture, setLecture] = useState([]);
+  const [lecLoading, setLecLoading] = useState(false);
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -19,9 +30,10 @@ const CourseStudy = ({ user }) => {
     };
     
     loadCourse();
+    fetchLectures();
+    fetchProgress();
   }, [params.id, fetchCourse]);
 
-  // Conditional Access Logic
   useEffect(() => {
     if (user) {
       const isAdmin = user.role === "admin";
@@ -32,20 +44,51 @@ const CourseStudy = ({ user }) => {
         navigate("/");
       }
     } else {
-      navigate("/login"); // Redirect unauthenticated users to login
+      navigate("/login"); 
     }
   }, [user, params.id, navigate]);
 
-  // Mock data for a better UI demonstration
-  const mockProgress = 35; // percentage
-  const mockModules = [
-    { id: 1, title: "Introduction to Course", lectures: 3, complete: true },
-    { id: 2, title: "Core Concepts", lectures: 5, complete: false },
-    { id: 3, title: "Advanced Techniques", lectures: 4, complete: false },
-    { id: 4, title: "Practical Applications", lectures: 6, complete: false },
-    { id: 5, title: "Final Project & Conclusion", lectures: 3, complete: false }
-  ];
+  async function fetchLectures() {
+    try {
+      const { data } = await axios.get(`${server}/api/lectures/${params.id}`, {
+        headers: { token: localStorage.getItem("token") },
+      });
+      setLectures(data.lectures);
+    } catch (error) {
+      console.log("Error fetching lectures:", error);
+    }
+  }
+  async function fetchLecture(id) {
+    setLecLoading(true);
+    try {
+      const { data } = await axios.get(`${server}/api/lecture/${id}`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
+      setLecture(data.lecture);
+      setLecLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLecLoading(false);
+    }
+  }
 
+  async function fetchProgress() {
+    try {
+      const { data } = await axios.get(`${server}/api/user/progress?course=${params.id}`, {
+        headers: { token: localStorage.getItem("token") },
+      });
+
+      setCompleted(data.courseProgressPercentage);
+      setCompletedLec(data.completedLectures);
+      setLectLength(data.allLectures);
+      setProgress(data.progress);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ 
   if (loading) return <Loading />;
 
   if (!course) {
@@ -89,12 +132,12 @@ const CourseStudy = ({ user }) => {
           <div className="cs-progress-container">
             <div className="cs-progress-header">
               <h3>Your Progress</h3>
-              <span className="cs-progress-percentage">{mockProgress}%</span>
+              <span className="cs-progress-percentage">{completed}%</span>
             </div>
             <div className="cs-progress-bar">
               <div 
                 className="cs-progress-fill" 
-                style={{ width: `${mockProgress}%` }}
+                style={{ width: `${completed}%` }}
               ></div>
             </div>
           </div>
@@ -111,13 +154,13 @@ const CourseStudy = ({ user }) => {
             />
           </div>
           <div className="cs-actions">
-  <Link to={`/lectures/${course._id}`} className="cs-primary-btn">
-    <FaPlayCircle className="cs-btn-icon" />
-    {user?.role === "admin" || (user?.role === "teacher" && course?.owner === user?._id) 
-      ? "Add Lectures" 
-      : "Continue Learning"}
-  </Link>
-</div>
+            <Link to={`/lectures/${course._id}`} className="cs-primary-btn">
+              <FaPlayCircle className="cs-btn-icon" />
+              {user?.role === "admin" || (user?.role === "teacher" && course?.owner === user?._id) 
+                ? "Add Lectures" 
+                : "Continue Learning"}
+            </Link>
+          </div>
         </div>
 
         <div className="cs-main-content">
@@ -129,26 +172,43 @@ const CourseStudy = ({ user }) => {
           <div className="cs-modules">
             <h2 className="cs-section-title">Course Content</h2>
             <div className="cs-module-list">
-              {mockModules.map((module) => (
-                <div key={module.id} className={`cs-module-item ${module.complete ? 'cs-completed' : ''}`}>
-                  <div className="cs-module-header">
-                    <div className="cs-module-title">
-                      {module.complete ? (
-                        <FaCheck className="cs-icon-complete" />
-                      ) : (
-                        <FaBook className="cs-icon-module" />
-                      )}
-                      <h3>{module.title}</h3>
-                    </div>
-                    <div className="cs-module-meta">
-                      <span>{module.lectures} lectures</span>
-                      <span className="cs-module-status cs-available">
-                        Available
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {lectures && lectures.length > 0 ? (
+  lectures.map((item, index) => (
+    <div key={item._id} className="lec-lecture-item-wrapper">
+      <Link to={`/lectures/${course._id}`} className={`lec-lecture-item ${lecture._id === item._id ? "lec-active" : ""}`}>
+        <div className="lec-lecture-info">
+          <div className="lec-lecture-number">{index + 1}</div>
+          <div className="lec-lecture-details">
+            <h3 className="lec-lecture-title">{item.title}</h3>
+            <div className="lec-lecture-meta">
+              <FaVideo className="lec-icon-video" />
+              <span>Video Lecture</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="lec-lecture-status">
+          {progress[0] && progress[0].completedLectures.includes(item._id) ? (
+            <div className="lec-completed-badge">
+              <FaCheck style={{backgroundColor: "green", borderRadius:"50%", height:"20px", width:"20px", padding:"3px"}}/>
+            </div>
+          ) : (
+            <div className="lec-play-icon">
+              <FaPlay />
+            </div>
+          )}
+        </div>
+      </Link>
+    </div>
+  ))
+) : (
+  <div className="lec-empty-state">
+    <p>No lectures available for this course yet.</p>
+    {user && (user.role === "admin" || user.role === "teacher") && (
+      <p>Click the + button to add your first lecture!</p>
+    )}
+  </div>
+)}
             </div>
           </div>
         </div>
