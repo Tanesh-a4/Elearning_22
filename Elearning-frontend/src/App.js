@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/Home';
+import Contact from './pages/contact/contact';
 import Header from './components/header/Header';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -27,6 +28,7 @@ import TeacherCourses from './teacher/courses/TeacherCourses';
 import AddCourse from './components/addcourse/AddCourse';
 import Report from './teacher/courses/Report';
 
+
 const App = () => {
   const { isAuth, user, loading } = UserData();
 
@@ -43,6 +45,7 @@ const App = () => {
             <Route path='/courses' element={<Courses />} />
             <Route path='/teachers' element={<Teacher />} />
             <Route path="/faqs" element={<FaqSection />} />
+            <Route path='/contact' element={<Contact />} />
             <Route path='/account' element={isAuth ? <Account user={user} /> : <Login />} />
             <Route path='/login' element={isAuth ? <Home /> : <Login />} />
             <Route path='/register' element={isAuth ? <Home /> : <Register />} />
