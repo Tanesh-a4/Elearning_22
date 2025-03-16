@@ -277,6 +277,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
   background: linear-gradient(to right, var(--primary), var(--primary-light));
   color: white;
   border: none;
