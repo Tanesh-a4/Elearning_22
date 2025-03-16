@@ -144,7 +144,8 @@ const AdminUsers = ({ user }) => {
   const totalPages = Math.ceil(sortedUsers.length / usersPerPage);
 
   return (
-    <Layout>
+   <div className="container-admin">
+     <Layout role="Admin">
       <div className="users-container">
         <div className="users-header">
           <h1>User Management</h1>
@@ -316,6 +317,7 @@ const AdminUsers = ({ user }) => {
         )}
       </div>
     </Layout>
+   </div>
   );
 };
 

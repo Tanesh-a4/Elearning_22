@@ -164,7 +164,8 @@ const AdminDashboard = ({ user }) => {
   }, [courseRegistrationStats]);
 
   return (
-    <Layout>
+    <div className="container-admin">
+    <Layout role="Admin">
       <div className="dashboard-container">
         <div className="dashboard-header">
           <h1>Dashboard Overview</h1>
@@ -236,6 +237,7 @@ const AdminDashboard = ({ user }) => {
         </div>
       </div>
     </Layout>
+    </div>
   );
 };
 

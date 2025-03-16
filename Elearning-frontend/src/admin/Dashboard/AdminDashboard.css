@@ -78,7 +78,9 @@ canvas {
   height: 200px; /* Explicitly reduce the height of the chart */
   max-width: 300px; /* Cap the chart width to avoid oversizing */
 }
-
+.container-admin{
+  margin-top: 8.2%;
+}
 .dashboard-container {
   padding: 30px;
   background-color: #f8f9fa;

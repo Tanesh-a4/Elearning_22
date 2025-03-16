@@ -224,12 +224,12 @@ useEffect(() => {
               <h1>Welcome back, {user ? user.name : "Teacher"}</h1>
               <p>Here's what's happening with your courses today.</p>
             </div>
-            <div className="td-actions">
+            {/* <div className="td-actions">
               <Link to="/create-course" className="td-create-course-btn">
                 <FaPlusCircle className="td-btn-icon" />
                 <span>New Course</span>
               </Link>
-            </div>
+            </div> */}
           </div>
 
           <div className="td-stats-grid">
