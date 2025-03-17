@@ -1,4 +1,4 @@
-import { User } from "../models/user.js";
+  import { User } from "../models/user.js";
 import TryCatch from "../middlewares/TryCatch.js";
 import {Courses} from "../models/Courses.js"
 import {Lecture} from "../models/Lecture.js"
@@ -37,41 +37,46 @@ export const getUserCourses = TryCatch(async (req, res) => {
   res.status(200).json({ success: true, courses: user.subscription });
 });
 
-export const fetchLectures = TryCatch (async(req,res)=>{
+export const fetchLectures = TryCatch(async(req,res)=>{
     const lectures = await Lecture.find({course: req.params.id});
-    console.log(lectures)
+    // console.log(lectures)
     const user = await User.findById(req.user._id);
-    if(user.role == "admin" || user.role == "teacher"){
+    
+    if(user.role === "admin" || user.role === "teacher"){
         return res.json({
             lectures
-        })
+        });
     }
-    if(!user.subscription.includes(req.params.id))
+    
+    // Fix the subscription check by comparing string versions of ObjectIds
+    const hasAccess = user.subscription.some(id => id.toString() === req.params.id);
+    if(!hasAccess)
         return res.status(400).json({
             message : "You have not access to the courses"
-        })
+        });
 
     res.json({lectures});
 });
 
-
-
-export const fetchlecutre = TryCatch (async(req,res)=>{
+export const fetchlecutre = TryCatch(async(req,res)=>{
     const lecture = await Lecture.findById(req.params.id);
     const user = await User.findById(req.user._id);
-    if(user.role == "admin" || user.role == "teacher"){
+    
+    if(user.role === "admin" || user.role === "teacher"){
         return res.json({
             lecture
-        })
+        });
     }
-    if(!user.subscription.includes(lecture.course))
+    
+    // Fix the subscription check by comparing string versions of ObjectIds
+    const hasAccess = user.subscription.some(id => id.toString() === lecture.course.toString());
+    if(!hasAccess)
         return res.status(400).json({
             message : "You have not access to the courses"
-        })
+        });
 
     res.json({lecture});
 });
-
 
 export const getMycourses = TryCatch (async(req,res)=>{
     const courses = await Courses.find({_id: req.user.subscription})
@@ -295,4 +300,3 @@ export const checkout = TryCatch(async (req, res) => {
         res.status(500).json({ message: "Server error. Please try again." });
     }
 };
-  
