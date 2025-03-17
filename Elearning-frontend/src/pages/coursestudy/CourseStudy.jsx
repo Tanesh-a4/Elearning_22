@@ -13,7 +13,7 @@ const CourseStudy = ({ user }) => {
   const [lectures, setLectures] = useState([]);
   const params = useParams();
   const { fetchCourse, course } = CourseData();
-  console.log(course._id)
+  // console.log(course._id)
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState([]);
