@@ -2,6 +2,7 @@
 import TryCatch from "../middlewares/TryCatch.js";
 import {Courses} from "../models/Courses.js"
 import {Lecture} from "../models/Lecture.js"
+import {PaymentHistory} from "../models/PaymentHistory.js" 
 import { instance } from "../index.js";
 import crypto from "crypto";
 import { Payment } from "../models/Payment.js";
@@ -139,6 +140,13 @@ export const checkout = TryCatch(async (req, res) => {
         course: course._id,
         completedLectures: [],
         user: req.user._id,
+      });
+      await PaymentHistory.create({
+        userId: req.user._id,
+        courseId: course._id,
+        paymentId: razorpay_payment_id,
+        status: 'completed',
+        amount: course.price
       });
   
       await user.save();
@@ -299,4 +307,75 @@ export const checkout = TryCatch(async (req, res) => {
         console.error("Error fetching monthly stats:", error);
         res.status(500).json({ message: "Server error. Please try again." });
     }
+};
+// Add these new controller functions
+
+// Check if user has previously paid for a course
+export const checkPaymentHistory = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const courseId = req.params.courseId;
+    
+    // Check payment history - This depends on how you're tracking payments
+    // Assuming you have a PaymentHistory model or a paymentHistory field in User model
+    const hasPaymentRecord = await PaymentHistory.findOne({
+      userId: req.user._id,
+      courseId: courseId,
+      status: 'completed'
+    });
+    
+    return res.status(200).json({
+      success: true,
+      hasPaid: !!hasPaymentRecord
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Direct enrollment without payment (for previously paid courses)
+export const directEnroll = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const user = await User.findById(req.user._id);
+    
+    // Check if already enrolled
+    if (user.subscription.includes(courseId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Already enrolled in this course"
+      });
+    }
+    
+    // Check if user has previously paid
+    const hasPaymentRecord = await PaymentHistory.findOne({
+      userId: req.user._id,
+      courseId: courseId,
+      status: 'completed'
+    });
+    
+    if (!hasPaymentRecord) {
+      return res.status(400).json({
+        success: false,
+        message: "Payment required for this course"
+      });
+    }
+    
+    // Add course to subscriptions
+    user.subscription.push(courseId);
+    await user.save();
+    
+    return res.status(200).json({
+      success: true,
+      message: "Successfully enrolled in the course"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };

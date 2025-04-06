@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllCourses, getSingleCourse ,fetchLectures,fetchlecutre, getMycourses, checkout, paymentVerification, generateCourseReport, getMonthlyStats} from '../controllers/course.js';
+import { getAllCourses, getSingleCourse ,fetchLectures,fetchlecutre, getMycourses, checkout, paymentVerification, generateCourseReport, getMonthlyStats, checkPaymentHistory, directEnroll} from '../controllers/course.js';
 import {isAuth, isTeacher,isAdminOrTeacher} from  '../middlewares/isAuth.js'
 import { TryCatch } from '../middlewares/TryCatch.js';
 
@@ -15,4 +15,8 @@ router.post("/verification/:id",isAuth,paymentVerification);
 router.get("/courses/:id/report", isAuth,isTeacher, generateCourseReport);
 router.post("/courses/:id/report",isAuth, generateCourseReport);
 router.get("/monthly-stats", isTeacher, getMonthlyStats);
+
+
+router.get('/check-payment-history/:courseId', isAuth, checkPaymentHistory);
+router.post('/direct-enroll', isAuth, directEnroll);
 export default router; 
