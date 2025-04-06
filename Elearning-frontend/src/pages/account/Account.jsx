@@ -38,6 +38,24 @@ const Account = ({ user }) => {
     }
   };
 
+  const withdrawTeacherApplication = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/users/${user._id}`,
+        { designation: "" },  // Reset designation to empty
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      toast.success("Application withdrawn successfully");
+      setUser((prevUser) => ({ ...prevUser, designation: "" }));
+    } catch (error) {
+      toast.error("Failed to withdraw application");
+    }
+  };
+
   // Generate initials for avatar
   const getInitials = () => {
     if (!user || !user.name) return "U";
@@ -182,9 +200,21 @@ const Account = ({ user }) => {
               <h3>Explore Courses</h3>
             </div>
             
-           
-            
-            
+            {user?.designation === "teacher" && user?.role === "user" && (
+              <div className="action-card flex flex-col items-center">
+                <div className="action-icon bg-amber-500">
+                  <FaBell />
+                </div>
+                <h3>Teacher Application</h3>
+                <p className="mt-2 text-sm font-medium text-amber-600">Status: Pending Review</p>
+                <button 
+                  className="mt-3 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-md transition-colors"
+                  onClick={withdrawTeacherApplication}
+                >
+                  Withdraw Application
+                </button>
+              </div>
+            )}
             
             {user?.designation !== "teacher" && user?.role === "user" && (
               <div className="action-card" onClick={applyToBecomeTeacher}>

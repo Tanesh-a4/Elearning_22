@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { CourseData } from "../../context/CourseContext";
 import { FaClock, FaChalkboardTeacher, FaRupeeSign, FaBookOpen, FaSignInAlt, FaTrashAlt } from "react-icons/fa";
+import { Modal, Button } from 'react-bootstrap'; // Add this import
 
 const CourseCard = ({ course }) => {
   const navigate = useNavigate();
@@ -14,12 +15,35 @@ const CourseCard = ({ course }) => {
   const { fetchCourses } = CourseData();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [hasPreviouslyPaid, setHasPreviouslyPaid] = useState(false);
 
   useEffect(() => {
     if (user && Array.isArray(user.subscription) && user.subscription.includes(course._id)) {
       setIsEnrolled(true);
     }
-  }, [user, course._id]);
+    
+    // Check if user previously paid for this course
+    const checkPaymentHistory = async () => {
+      if (isAuth && user) {
+        try {
+          const { data } = await axios.get(
+            `${server}/api/check-payment-history/${course._id}`,
+            {
+              headers: {
+                token: localStorage.getItem("token"),
+              },
+            }
+          );
+          setHasPreviouslyPaid(data.hasPaid);
+        } catch (error) {
+          console.error("Error checking payment history:", error);
+        }
+      }
+    };
+    
+    checkPaymentHistory();
+  }, [user, course._id, isAuth]);
 
   const unenrollHandler = async (courseId) => {
     try {
@@ -53,6 +77,37 @@ const CourseCard = ({ course }) => {
       fetchCourses();
     } catch (error) {
       toast.error(error.response.data.message);
+    }
+  };
+
+  // Add this function to handle enrollment with payment check
+  const handleEnrollment = () => {
+    if (hasPreviouslyPaid) {
+      // If previously paid, directly enroll without payment
+      directEnrollHandler(course._id);
+    } else {
+      // Show payment confirmation modal
+      setShowPaymentModal(true);
+    }
+  };
+
+  // Add this function for direct enrollment (no payment needed)
+  const directEnrollHandler = async (courseId) => {
+    try {
+      const { data } = await axios.post(
+        `${server}/api/direct-enroll`,
+        { courseId },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      toast.success(data.message);
+      setIsEnrolled(true);
+      fetchCourses();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Enrollment failed");
     }
   };
 
@@ -139,7 +194,7 @@ const CourseCard = ({ course }) => {
                       </div>
                     ) : (
                       <button
-                        onClick={() => navigate(`/course/${course._id}`)}
+                        onClick={handleEnrollment}
                         className="cc-btn cc-btn-primary cc-full-width"
                       >
                         Get Started
@@ -172,6 +227,31 @@ const CourseCard = ({ course }) => {
           </div>
         </div>
       </div>
+
+      {/* Payment Confirmation Modal */}
+      <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Payment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Do you want to proceed to payment for "{course.title}"?</p>
+          <p>Course Price: ₹{course.price}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>
+            Cancel
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={() => {
+              setShowPaymentModal(false);
+              navigate(`/course/${course._id}`);
+            }}
+          >
+            Yes, Continue to Payment
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
