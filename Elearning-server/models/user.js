@@ -38,4 +38,8 @@ const schema = new mongoose.Schema({
 }
 );
 
+// Add to schema definition
+schema.index({ email: 1 }, { unique: true });
+schema.index({ role: 1 });
+
 export const User = mongoose.model("User",schema);

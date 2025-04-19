@@ -107,7 +107,7 @@ const AdminCourses = ({ user }) => {
   };
 
   return (
-    <div className="container-admin">
+    <div className="admin-courses">
       <Layout role="Admin">
       <div className="admin-courses-container">
         <div className="admin-courses-header">
