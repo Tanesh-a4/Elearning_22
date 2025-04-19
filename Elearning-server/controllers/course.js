@@ -1,4 +1,4 @@
-  import { User } from "../models/user.js";
+import { User } from "../models/user.js";
 import TryCatch from "../middlewares/TryCatch.js";
 import {Courses} from "../models/Courses.js"
 import {Lecture} from "../models/Lecture.js"
@@ -8,14 +8,25 @@ import crypto from "crypto";
 import { Payment } from "../models/Payment.js";
 import {Progress} from "../models/Progress.js"
 import { log } from "console";
+import NodeCache from 'node-cache';
+
+// Initialize cache with 10-minute TTL
+const appCache = new NodeCache({ stdTTL: 600 });
 
 export const getAllCourses = TryCatch(async(req,res)=>{
+    // Check cache first
+    const cachedCourses = appCache.get("all_courses");
+    if (cachedCourses) {
+        return res.json({ courses: cachedCourses });
+    }
+    
+    // If not in cache, fetch from database
     const courses = await Courses.find();
     
-    res.json(
-        {
-            courses,
-        });
+    // Store in cache for future requests
+    appCache.set("all_courses", courses);
+    
+    res.json({ courses });
 });
 
 
