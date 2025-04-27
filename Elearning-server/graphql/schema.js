@@ -1,159 +1,60 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLBoolean, GraphQLID, GraphQLInt } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLID } from 'graphql';
 import { UserType } from './types/userType.js';
 import { CourseType } from './types/courseType.js';
 import { LectureType } from './types/lectureType.js';
 import { PaymentType } from './types/paymentType.js';
 import { PaymentHistoryType } from './types/paymentHistoryType.js';
 import { ProgressType } from './types/progresstype.js';
-import { adminResolvers } from './resolvers/adminResolver.js'; // Import admin resolvers
-import { courseResolvers } from './resolvers/courseResolvers.js'; // Import course resolvers
+import { User } from '../models/user.js';
+import { Courses } from '../models/Courses.js';
+import { Lecture } from '../models/Lecture.js';
+import { Payment } from '../models/Payment.js';
+import { PaymentHistory } from '../models/PaymentHistory.js';
+import { Progress } from '../models/Progress.js';
 
-// Define MessageResponse type to handle mutation responses
-const MessageResponseType = new GraphQLObjectType({
-  name: 'MessageResponse',
-  fields: {
-    message: { type: GraphQLString },
-  },
-});
-
-// RootQuery with queries from both resolvers
+// RootQuery with only queries
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    // Admin queries
-    getAllStats: {
-      type: new GraphQLObjectType({
-        name: 'Stats',
-        fields: {
-          totalCourses: { type: GraphQLInt },
-          totalLectures: { type: GraphQLInt },
-          totalUsers: { type: GraphQLInt },
-          userDistribution: { type: new GraphQLList(GraphQLString) },
-          courseRegistrationStats: { type: new GraphQLList(CourseType) }, // Adapt according to actual response structure
-        },
-      }),
-      resolve: adminResolvers.Query.getAllStats,
-    },
-    getAllUsers: {
+    users: {
       type: new GraphQLList(UserType),
-      resolve: adminResolvers.Query.getAllUsers,
+      resolve() {
+        return User.find();
+      },
     },
-
-    // Course queries
-    getAllCourses: {
+    courses: {
       type: new GraphQLList(CourseType),
-      resolve: courseResolvers.Query.getAllCourses,
+      resolve() {
+        return Courses.find();
+      },
     },
-    getSingleCourse: {
-      type: CourseType,
-      args: { id: { type: GraphQLID } },
-      resolve: courseResolvers.Query.getSingleCourse,
-    },
-    fetchLectures: {
+    lectures: {
       type: new GraphQLList(LectureType),
-      args: { courseId: { type: GraphQLID } },
-      resolve: courseResolvers.Query.fetchLectures,
-    },
-  },
-});
-
-// RootMutation with mutations from both resolvers
-const RootMutation = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    // Admin mutations
-    createCourse: {
-      type: MessageResponseType,
-      args: {
-        title: { type: GraphQLString },
-        description: { type: GraphQLString },
-        category: { type: GraphQLString },
-        createdBy: { type: GraphQLString },
-        duration: { type: GraphQLString },
-        price: { type: GraphQLString },
-        image: { type: GraphQLString },
+      resolve() {
+        return Lecture.find();
       },
-      resolve: adminResolvers.Mutation.createCourse,
     },
-    addLectures: {
-      type: MessageResponseType,
-      args: {
-        courseId: { type: GraphQLID },
-        title: { type: GraphQLString },
-        description: { type: GraphQLString },
-        video: { type: GraphQLString },
+    payments: {
+      type: new GraphQLList(PaymentType),
+      resolve() {
+        return Payment.find();
       },
-      resolve: adminResolvers.Mutation.addLectures,
     },
-    deleteLecture: {
-      type: MessageResponseType,
-      args: { lectureId: { type: GraphQLID } },
-      resolve: adminResolvers.Mutation.deleteLecture,
-    },
-    deleteCourse: {
-      type: MessageResponseType,
-      args: { courseId: { type: GraphQLID } },
-      resolve: adminResolvers.Mutation.deleteCourse,
-    },
-    updateRole: {
-      type: MessageResponseType,
-      args: {
-        userId: { type: GraphQLID },
-        role: { type: GraphQLString },
+    paymentHistories: {
+      type: new GraphQLList(PaymentHistoryType),
+      resolve() {
+        return PaymentHistory.find();
       },
-      resolve: adminResolvers.Mutation.updateRole,
     },
-    deleteUser: {
-      type: MessageResponseType,
-      args: { userId: { type: GraphQLID } },
-      resolve: adminResolvers.Mutation.deleteUser,
-    },
-
-    // Course mutations
-    checkout: {
-      type: MessageResponseType,
-      args: { courseId: { type: GraphQLID } },
-      resolve: courseResolvers.Mutation.checkout,
-    },
-    paymentVerification: {
-      type: MessageResponseType,
-      args: {
-        razorpay_order_id: { type: GraphQLString },
-        razorpay_payment_id: { type: GraphQLString },
-        razorpay_signature: { type: GraphQLString },
+    progress: {
+      type: new GraphQLList(ProgressType),
+      resolve() {
+        return Progress.find();
       },
-      resolve: courseResolvers.Mutation.paymentVerification,
-    },
-    addProgress: {
-      type: MessageResponseType,
-      args: { courseId: { type: GraphQLID }, lectureId: { type: GraphQLID } },
-      resolve: courseResolvers.Mutation.addProgress,
-    },
-    getMyCourses: {
-      type: new GraphQLList(CourseType),
-      resolve: courseResolvers.Mutation.getMyCourses,
-    },
-    generateCourseReport: {
-      type: new GraphQLObjectType({
-        name: 'CourseReport',
-        fields: {
-          courseId: { type: GraphQLID },
-          totalSubscribers: { type: GraphQLInt },
-          totalRevenue: { type: GraphQLInt },
-          progress: { type: new GraphQLList(ProgressType) },
-        },
-      }),
-      args: { courseId: { type: GraphQLID } },
-      resolve: courseResolvers.Mutation.generateCourseReport,
-    },
-    getMonthlyStats: {
-      type: new GraphQLList(GraphQLString),
-      resolve: courseResolvers.Mutation.getMonthlyStats,
     },
   },
 });
 
 export default new GraphQLSchema({
   query: RootQuery,
-  mutation: RootMutation,
 });
