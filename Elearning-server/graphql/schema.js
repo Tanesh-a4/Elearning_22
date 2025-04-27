@@ -1,4 +1,4 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLBoolean, GraphQLID } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLBoolean, GraphQLID, GraphQLInt } from 'graphql';
 import { UserType } from './types/userType.js';
 import { CourseType } from './types/courseType.js';
 import { LectureType } from './types/lectureType.js';
@@ -6,8 +6,9 @@ import { PaymentType } from './types/paymentType.js';
 import { PaymentHistoryType } from './types/paymentHistoryType.js';
 import { ProgressType } from './types/progresstype.js';
 import { adminResolvers } from './resolvers/adminResolver.js'; // Import admin resolvers
+import { courseResolvers } from './resolvers/courseResolvers.js'; // Import course resolvers
 
-// Define MessageResponse type only once to avoid conflicts
+// Define MessageResponse type to handle mutation responses
 const MessageResponseType = new GraphQLObjectType({
   name: 'MessageResponse',
   fields: {
@@ -15,54 +16,54 @@ const MessageResponseType = new GraphQLObjectType({
   },
 });
 
+// RootQuery with queries from both resolvers
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    users: {
+    // Admin queries
+    getAllStats: {
+      type: new GraphQLObjectType({
+        name: 'Stats',
+        fields: {
+          totalCourses: { type: GraphQLInt },
+          totalLectures: { type: GraphQLInt },
+          totalUsers: { type: GraphQLInt },
+          userDistribution: { type: new GraphQLList(GraphQLString) },
+          courseRegistrationStats: { type: new GraphQLList(CourseType) }, // Adapt according to actual response structure
+        },
+      }),
+      resolve: adminResolvers.Query.getAllStats,
+    },
+    getAllUsers: {
       type: new GraphQLList(UserType),
-      resolve() {
-        return User.find();
-      },
+      resolve: adminResolvers.Query.getAllUsers,
     },
-    courses: {
+
+    // Course queries
+    getAllCourses: {
       type: new GraphQLList(CourseType),
-      resolve() {
-        return Courses.find();
-      },
+      resolve: courseResolvers.Query.getAllCourses,
     },
-    lectures: {
+    getSingleCourse: {
+      type: CourseType,
+      args: { id: { type: GraphQLID } },
+      resolve: courseResolvers.Query.getSingleCourse,
+    },
+    fetchLectures: {
       type: new GraphQLList(LectureType),
-      resolve() {
-        return Lecture.find();
-      },
-    },
-    payments: {
-      type: new GraphQLList(PaymentType),
-      resolve() {
-        return Payment.find();
-      },
-    },
-    paymentHistories: {
-      type: new GraphQLList(PaymentHistoryType),
-      resolve() {
-        return PaymentHistory.find();
-      },
-    },
-    progress: {
-      type: new GraphQLList(ProgressType),
-      resolve() {
-        return Progress.find();
-      },
+      args: { courseId: { type: GraphQLID } },
+      resolve: courseResolvers.Query.fetchLectures,
     },
   },
 });
 
-// Mutation Type
-const Mutation = new GraphQLObjectType({
+// RootMutation with mutations from both resolvers
+const RootMutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+    // Admin mutations
     createCourse: {
-      type: MessageResponseType, // Use the MessageResponseType
+      type: MessageResponseType,
       args: {
         title: { type: GraphQLString },
         description: { type: GraphQLString },
@@ -75,9 +76,9 @@ const Mutation = new GraphQLObjectType({
       resolve: adminResolvers.Mutation.createCourse,
     },
     addLectures: {
-      type: MessageResponseType, // Use the MessageResponseType
+      type: MessageResponseType,
       args: {
-        courseId: { type: GraphQLString },
+        courseId: { type: GraphQLID },
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         video: { type: GraphQLString },
@@ -85,38 +86,74 @@ const Mutation = new GraphQLObjectType({
       resolve: adminResolvers.Mutation.addLectures,
     },
     deleteLecture: {
-      type: MessageResponseType, // Use the MessageResponseType
-      args: {
-        lectureId: { type: GraphQLString },
-      },
+      type: MessageResponseType,
+      args: { lectureId: { type: GraphQLID } },
       resolve: adminResolvers.Mutation.deleteLecture,
     },
     deleteCourse: {
-      type: MessageResponseType, // Use the MessageResponseType
-      args: {
-        courseId: { type: GraphQLString },
-      },
+      type: MessageResponseType,
+      args: { courseId: { type: GraphQLID } },
       resolve: adminResolvers.Mutation.deleteCourse,
     },
     updateRole: {
-      type: MessageResponseType, // Use the MessageResponseType
+      type: MessageResponseType,
       args: {
-        userId: { type: GraphQLString },
+        userId: { type: GraphQLID },
         role: { type: GraphQLString },
       },
       resolve: adminResolvers.Mutation.updateRole,
     },
     deleteUser: {
-      type: MessageResponseType, // Use the MessageResponseType
-      args: {
-        userId: { type: GraphQLString },
-      },
+      type: MessageResponseType,
+      args: { userId: { type: GraphQLID } },
       resolve: adminResolvers.Mutation.deleteUser,
+    },
+
+    // Course mutations
+    checkout: {
+      type: MessageResponseType,
+      args: { courseId: { type: GraphQLID } },
+      resolve: courseResolvers.Mutation.checkout,
+    },
+    paymentVerification: {
+      type: MessageResponseType,
+      args: {
+        razorpay_order_id: { type: GraphQLString },
+        razorpay_payment_id: { type: GraphQLString },
+        razorpay_signature: { type: GraphQLString },
+      },
+      resolve: courseResolvers.Mutation.paymentVerification,
+    },
+    addProgress: {
+      type: MessageResponseType,
+      args: { courseId: { type: GraphQLID }, lectureId: { type: GraphQLID } },
+      resolve: courseResolvers.Mutation.addProgress,
+    },
+    getMyCourses: {
+      type: new GraphQLList(CourseType),
+      resolve: courseResolvers.Mutation.getMyCourses,
+    },
+    generateCourseReport: {
+      type: new GraphQLObjectType({
+        name: 'CourseReport',
+        fields: {
+          courseId: { type: GraphQLID },
+          totalSubscribers: { type: GraphQLInt },
+          totalRevenue: { type: GraphQLInt },
+          progress: { type: new GraphQLList(ProgressType) },
+        },
+      }),
+      args: { courseId: { type: GraphQLID } },
+      resolve: courseResolvers.Mutation.generateCourseReport,
+    },
+    getMonthlyStats: {
+      type: new GraphQLList(GraphQLString),
+      resolve: courseResolvers.Mutation.getMonthlyStats,
     },
   },
 });
 
 export default new GraphQLSchema({
   query: RootQuery,
-  mutation: Mutation,
+  mutation: RootMutation,
 });
