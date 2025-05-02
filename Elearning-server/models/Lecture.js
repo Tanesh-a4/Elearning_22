@@ -1,27 +1,33 @@
-import mongoose, { mongo, Mongoose, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const schema = new mongoose.Schema({
-    title:{
+    title: {
         type: String, 
         required: true,
-    }
-    ,
-    description:{
+    },
+    description: {
         type: String,
         required: true,
     },
-    video :{
+    video: {
         type: String,
         required: true,
     },
-    course :{
+    course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Courses",
         required: true,
     },
-    createdAt :{
+    createdAt: {
         type: Date,
         default: Date.now,
     },
-})
+}, {
+    timestamps: true,
+});
+
+// Add indexes
+schema.index({ course: 1 });           // Index to quickly find lectures by course
+schema.index({ title: 1 });            // Index to search lectures by title
+
 export const Lecture = mongoose.model('Lecture', schema);

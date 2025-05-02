@@ -22,4 +22,9 @@ const schema = new mongoose.Schema(
   }
 );
 
+// Add indexes
+schema.index({ user: 1, course: 1 }, { unique: true });   // One progress document per user per course
+schema.index({ course: 1 });                              // Faster lookup by course
+schema.index({ user: 1 });                                // Faster lookup by user
+
 export const Progress = mongoose.model("Progress", schema);

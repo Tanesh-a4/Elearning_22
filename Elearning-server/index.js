@@ -9,6 +9,8 @@ import schema from './graphql/schema.js';
 
 dotenv.config();
 
+import swagger from './swagger.js';
+
 export const instance = new Razorpay({
   key_id: process.env.Razorpay_Key,
   key_secret: process.env.Razorpay_Secret,
@@ -42,6 +44,10 @@ import adminRoutes from './routes/admin.js';
 app.use('/api', userRoutes);
 app.use('/api', courseRoutes);
 app.use('/api', adminRoutes);
+
+
+app.use('/api-docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.specs));
+
 
 // GraphQL endpoint
 app.use('/graphql', graphqlHTTP({

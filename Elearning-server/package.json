@@ -25,6 +25,8 @@
     "nodemailer": "^6.9.16",
     "razorpay": "^2.9.5",
     "redis": "^4.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
