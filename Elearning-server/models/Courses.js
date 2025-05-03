@@ -47,4 +47,4 @@ schema.index({ category: 1 });
 schema.index({ price: 1 });           
 schema.index({ owner: 1 });           
 
-export const Courses = mongoose.model("Courses", schema);
+export const Courses = mongoose.models.Courses || mongoose.model("Courses", schema);;

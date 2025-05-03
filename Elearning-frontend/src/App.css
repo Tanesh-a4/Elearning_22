@@ -4,7 +4,12 @@ body{
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
-
+.content-container {
+  min-height: calc(100vh - 80px); /* Adjust based on your header height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .common-btn{
   background-color: rgb(255, 255, 255);
   color: white;
