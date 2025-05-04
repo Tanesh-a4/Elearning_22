@@ -11,6 +11,24 @@ Key Features:
 
 - Real-time communication and collaboration between users
 
+ ## Test Results Comparison: Before vs After Caching
+
+### Overview
+This section compares the performance metrics before and after implementing caching. Caching has significantly improved response times and session lengths, but the issue with HTTP 404 errors persists.
+
+### Metrics
+
+| Metric                    | **Before Caching** | **After Caching** | **Change**       |
+| ------------------------- | ------------------ | ----------------- | ---------------- |
+| **Mean Response Time**    | 1.2 ms             | **0.9 ms**        | 🔽 25% faster    |
+| **p99 Response Time**     | 8 ms               | **3 ms**          | 🔽 62.5% faster  |
+| **Session Length (mean)** | 11.7 s             | **6.2 s**         | 🔽 47% faster    |
+| **Requests Served**       | 600                | 600               | ➖ Same          |
+| **HTTP 404s**             | 600                | 600               | ❌ No improvement |
+
+
+
+
 ## Features
 
 - **Interactive Learning Modules**: Engage users with dynamic lessons and interactive quizzes.
