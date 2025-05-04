@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Contact from './pages/contact/contact';
 import Header from './components/header/Header';
@@ -28,6 +28,37 @@ import TeacherCourses from './teacher/courses/TeacherCourses';
 import AddCourse from './components/addcourse/AddCourse';
 import Report from './teacher/courses/Report';
 import ChatPage from './pages/chat/ChatPage';
+import ChatButton from './components/ChatButton/ChatButton';
+import { FaComment } from 'react-icons/fa'; // Add this import
+import { useChat } from './context/ChatContext';
+import { ChatProvider } from './context/ChatContext';
+
+// Update the FloatingChatButton component
+const FloatingChatButton = () => {
+  const { unreadCounts } = useChat();
+  const navigate = useNavigate(); // Add navigate function
+  
+  // Calculate total unread messages
+  const totalUnread = Object.values(unreadCounts || {}).reduce((sum, count) => sum + count, 0);
+  
+  // Create a direct handler instead of relying on the component
+  const handleChatOpen = () => {
+    navigate('/chat');
+  };
+  
+  return (
+    <button 
+      className="floating-chat-button"
+      onClick={handleChatOpen}
+      aria-label="Open messages"
+    >
+      <FaComment />
+      {totalUnread > 0 && (
+        <span className="unread-badge">{totalUnread}</span>
+      )}
+    </button>
+  );
+};
 
 const App = () => {
   const { isAuth, user, loading } = UserData();
@@ -35,41 +66,44 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-        <Header isAuth={isAuth} />
-        {loading ? (
-          <div className="content-container">
-            <Loading />
-          </div>
-        ) : (
-          <>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/courses' element={<Courses />} />
-              <Route path='/teachers' element={<Teacher />} />
-              <Route path="/faqs" element={<FaqSection />} />
-              <Route path='/contact' element={<Contact />} />
-              <Route path='/account' element={isAuth ? <Account user={user} /> : <Login />} />
-              <Route path='/login' element={isAuth ? <Home /> : <Login />} />
-              <Route path='/register' element={isAuth ? <Home /> : <Register />} />
-              <Route path='/verify' element={isAuth ? <Home /> : <Verify />} />
-              <Route path='/course/:id' element={isAuth ? <CourseDescription user={user} /> : <Login />} />
-              <Route path='/payment-success/:id' element={isAuth ? <PaymentSuccess user={user} /> : <Login />} />
-              <Route path='/:id/dashboard' element={isAuth ? <Dashboard user={user} /> : <Login />} />
-              <Route path='/course/study/:id' element={isAuth ? <CourseStudy user={user} /> : <Login />} />
-              <Route path="/lectures/:id" element={isAuth ? <Lecture user={user} /> : <Login />} />
-              <Route path="/admin/dashboard" element={isAuth ? <AdminDashbord user={user} /> : <Login />} />
-              <Route path="/teacher/:userId/dashboard" element={isAuth ? <TeacherDashboard /> : <Login />} />
-              <Route path="/admin/course" element={isAuth ? <AdminCourses user={user} /> : <Login />} />
-              <Route path="/teacher/:userId/course" element={isAuth ? <TeacherCourses /> : <Login />} />
-              <Route path="/admin/users" element={isAuth ? <AdminUsers user={user} /> : <Login />} />
-              <Route path="/teacher/:userId/add-course" element={isAuth ? <AddCourse /> : <Login />} />
-              <Route path="/courses/:id/report" element={isAuth ? <Report /> : <Login />} />
-              <Route path="/chat" element={isAuth ? <ChatPage /> : <Login />} />
-            </Routes>
-            <Footer />
-          </>
-        )}
+        <ChatProvider> {/* Make sure ChatProvider wraps everything */}
+          <Header isAuth={isAuth} />
+          {loading ? (
+            <div className="content-container">
+              <Loading />
+            </div>
+          ) : (
+            <>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/courses' element={<Courses />} />
+                <Route path='/teachers' element={<Teacher />} />
+                <Route path="/faqs" element={<FaqSection />} />
+                <Route path='/contact' element={<Contact />} />
+                <Route path='/account' element={isAuth ? <Account user={user} /> : <Login />} />
+                <Route path='/login' element={isAuth ? <Home /> : <Login />} />
+                <Route path='/register' element={isAuth ? <Home /> : <Register />} />
+                <Route path='/verify' element={isAuth ? <Home /> : <Verify />} />
+                <Route path='/course/:id' element={isAuth ? <CourseDescription user={user} /> : <Login />} />
+                <Route path='/payment-success/:id' element={isAuth ? <PaymentSuccess user={user} /> : <Login />} />
+                <Route path='/:id/dashboard' element={isAuth ? <Dashboard user={user} /> : <Login />} />
+                <Route path='/course/study/:id' element={isAuth ? <CourseStudy user={user} /> : <Login />} />
+                <Route path="/lectures/:id" element={isAuth ? <Lecture user={user} /> : <Login />} />
+                <Route path="/admin/dashboard" element={isAuth ? <AdminDashbord user={user} /> : <Login />} />
+                <Route path="/teacher/:userId/dashboard" element={isAuth ? <TeacherDashboard /> : <Login />} />
+                <Route path="/admin/course" element={isAuth ? <AdminCourses user={user} /> : <Login />} />
+                <Route path="/teacher/:userId/course" element={isAuth ? <TeacherCourses /> : <Login />} />
+                <Route path="/admin/users" element={isAuth ? <AdminUsers user={user} /> : <Login />} />
+                <Route path="/teacher/:userId/add-course" element={isAuth ? <AddCourse /> : <Login />} />
+                <Route path="/courses/:id/report" element={isAuth ? <Report /> : <Login />} />
+                <Route path="/chat" element={isAuth ? <ChatPage /> : <Login />} />
+              </Routes>
+              <Footer />
+              {isAuth && <FloatingChatButton />}
+            </>
+          )}
+        </ChatProvider>
       </BrowserRouter>
     </div>
   );

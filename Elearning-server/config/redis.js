@@ -1,4 +1,5 @@
 import { createClient } from 'redis';
+import 'dotenv/config'; // OR require('dotenv').config(); for CommonJS
 
 // Redis client configuration
 const redisClient = createClient({

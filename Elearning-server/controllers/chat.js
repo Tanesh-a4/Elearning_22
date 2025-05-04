@@ -2,7 +2,7 @@ import TryCatch from "../middlewares/TryCatch.js";
 import { Message } from "../models/Message.js";
 import { Conversation } from "../models/Conversation.js";
 import { User } from "../models/user.js";
-import { Courses } from "../models/courses.js"; // Make sure path is correct
+import { Courses } from "../models/Courses.js"; // Make sure path is correct
 
 // Get all conversations for a user
 export const getUserConversations = TryCatch(async (req, res) => {

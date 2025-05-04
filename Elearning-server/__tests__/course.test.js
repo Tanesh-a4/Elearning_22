@@ -1,10 +1,24 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { getAllCourses, getSingleCourse, fetchLectures, getUserCourses, generateCourseReport } from '../controllers/course.js';
 import { User } from '../models/user.js';
 import { Courses } from '../models/Courses.js';
 import { Lecture } from '../models/Lecture.js';
 import { Progress } from '../models/Progress.js';
+
+// Mock the routes modules that reference addProgress
+jest.mock('../routes/user.js', () => {
+  // Create a mock router object
+  const mockRouter = {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn()
+  };
+  return mockRouter;
+});
+
+// Now import the controllers after mocking the problematic module
+import { getAllCourses, getSingleCourse, fetchLectures } from '../controllers/course.js';
 
 let mongoServer;
 
