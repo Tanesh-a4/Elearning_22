@@ -7,6 +7,13 @@ import { PaymentHistoryType } from './types/paymentHistoryType.js';
 import { ProgressType } from './types/progresstype.js';
 import { adminResolvers } from './resolvers/adminResolver.js'; // Import admin resolvers
 
+  import { User } from '../models/user.js';
+import { Courses } from '../models/Courses.js';
+import { Lecture } from '../models/Lecture.js';
+import { Payment } from '../models/Payment.js';
+import { PaymentHistory } from '../models/PaymentHistory.js';
+import { Progress } from '../models/Progress.js';
+
 // Define MessageResponse type only once to avoid conflicts
 const MessageResponseType = new GraphQLObjectType({
   name: 'MessageResponse',

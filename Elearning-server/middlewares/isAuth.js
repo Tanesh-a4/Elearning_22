@@ -1,7 +1,23 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 
-export const isAuth = async (req,res,next) => {
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * Authentication middleware to verify JWT token
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next function
+ */
+export const isAuth = async (req, res, next) => {
     try {
         const token = req.headers.token;
         if(!token) 
@@ -18,6 +34,12 @@ export const isAuth = async (req,res,next) => {
     }  
 };
 
+/**
+ * Authorization middleware to check if user is a teacher
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next function
+ */
 export const isTeacher = (req, res, next) => {
     try {
       if (req.user.role !== "teacher") {
@@ -33,7 +55,12 @@ export const isTeacher = (req, res, next) => {
     }
   };
 
-
+/**
+ * Authorization middleware to check if user is an admin
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next function
+ */
 export const isAdmin = (req,res,next) =>{
         try {
             if(req.user.role  !== "admin")
