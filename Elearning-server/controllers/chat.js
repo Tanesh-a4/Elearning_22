@@ -135,7 +135,7 @@ export const getContactsList = TryCatch(async (req, res) => {
     let contacts = [];
     
     // Filter based on user role
-    if (role === "student") {
+    if (role === "user") {
       // Get courses this student is enrolled in
       const studentUser = await User.findById(userId).select('subscription');
       
@@ -170,6 +170,8 @@ export const getContactsList = TryCatch(async (req, res) => {
         }
       }).select('name role email');
       
+      
+      
     } else if (role === "teacher") {
       // Get courses taught by this teacher
       const teacherCourses = await Courses.find({ owner: userId });
@@ -180,8 +182,9 @@ export const getContactsList = TryCatch(async (req, res) => {
       // Find students enrolled in those courses
       const enrolledStudents = await User.find({
         subscription: { $in: courseIds },
-        role: "student"
+        role: { $in: ["user", "teacher", "admin"] }
       }).select('_id name role email');
+      console.log("Students" + enrolledStudents);
       
       // Get admin users
       const admins = await User.find({ 
@@ -191,6 +194,7 @@ export const getContactsList = TryCatch(async (req, res) => {
       
       // Combine students and admins
       contacts = [...enrolledStudents, ...admins];
+      console.log(contacts);
       
     } else if (role === "admin") {
       // Admins can message everyone

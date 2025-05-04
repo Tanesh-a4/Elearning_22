@@ -17,7 +17,8 @@ const Chat = () => {
     fetchContacts,
     fetchConversations 
   } = useChat();
-  
+console.log(contacts);
+
   const { user } = UserData();
   const [messageText, setMessageText] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
