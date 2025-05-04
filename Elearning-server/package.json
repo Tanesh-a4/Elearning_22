@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --coverage",
+    "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "author": "",
   "license": "ISC",
@@ -25,9 +27,38 @@
     "nodemailer": "^6.9.16",
     "razorpay": "^2.9.5",
     "redis": "^4.7.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "@babel/preset-env": "^7.27.1",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "jest-html-reporter": "^4.1.0",
+    "mongodb-memory-server": "^10.1.4",
+    "nodemon": "^3.1.7",
+    "supertest": "^7.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "E-Learning Server Test Report",
+          "outputPath": "./test-report.html"
+        }
+      ]
+    ]
   }
 }
