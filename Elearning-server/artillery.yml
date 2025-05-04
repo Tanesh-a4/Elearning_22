@@ -8,4 +8,4 @@ scenarios:
   - name: "Search courses in database"
     flow:
       - get:
-          url: "/api/user/login"
+          url: "/api/courses/all"
