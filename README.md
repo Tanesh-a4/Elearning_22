@@ -1,7 +1,3 @@
-Here’s an updated README file template reflecting that it is a team contribution:
-
----
-
 # Elearning_22
 
 ## Overview
