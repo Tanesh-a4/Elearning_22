@@ -17,15 +17,24 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # Setup Node.js once
-    - name: Use Node.js ${{ matrix.node-version }}
+    # Setup Node.js (without caching at root)
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # no cache here because no lock file at root
 
-    # Install, build and test Backend
-    - name: Install Backend Dependencies
+    # --- Backend Install, Build, Test ---
+    - name: Cache Backend dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.npm
+        key: backend-${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('elearning-backend/package-lock.json') }}
+        restore-keys: |
+          backend-${{ runner.os }}-node-${{ matrix.node-version }}-
+
+    - name: Install Backend dependencies
       working-directory: elearning-backend
       run: npm install --legacy-peer-deps
 
@@ -37,8 +46,17 @@ jobs:
       working-directory: elearning-backend
       run: npm test
 
-    # Install, build and test Frontend
-    - name: Install Frontend Dependencies
+    # --- Frontend Install, Build, Test ---
+    - name: Cache Frontend dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.npm
+        key: frontend-${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('elearning-frontend/package-lock.json') }}
+        restore-keys: |
+          frontend-${{ runner.os }}-node-${{ matrix.node-version }}-
+
+    - name: Install Frontend dependencies
       working-directory: elearning-frontend
       run: npm install --legacy-peer-deps
 
