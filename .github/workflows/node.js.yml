@@ -35,15 +35,15 @@ jobs:
           backend-${{ runner.os }}-node-${{ matrix.node-version }}-
 
     - name: Install Backend dependencies
-      working-directory: elearning-backend
+      working-directory: Elearning-server
       run: npm install --legacy-peer-deps
 
     - name: Build Backend
-      working-directory: elearning-backend
+      working-directory: Elearning-server
       run: npm run build --if-present
 
     - name: Test Backend
-      working-directory: elearning-backend
+      working-directory: Elearning-server
       run: npm test
 
     # --- Frontend Install, Build, Test ---
@@ -57,13 +57,13 @@ jobs:
           frontend-${{ runner.os }}-node-${{ matrix.node-version }}-
 
     - name: Install Frontend dependencies
-      working-directory: elearning-frontend
+      working-directory: Elearning-frontend
       run: npm install --legacy-peer-deps
 
     - name: Build Frontend
-      working-directory: elearning-frontend
+      working-directory: Elearning-frontend
       run: npm run build --if-present
 
     - name: Test Frontend
-      working-directory: elearning-frontend
+      working-directory: Elearning-frontend
       run: npm test
