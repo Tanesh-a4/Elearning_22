@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Lecture.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { server } from "../../index";
+import { server } from "../../";
 import Loading from "../../components/loading/Loading";
 import toast from "react-hot-toast";
 import { TiTick } from "react-icons/ti";

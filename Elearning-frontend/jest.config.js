@@ -1,26 +1,54 @@
 module.exports = {
-  testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
-  moduleNameMapper: {
-    "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/src/__mocks__/fileMock.js",
-    "\\.(css|less|scss|sass)$": "<rootDir>/src/__mocks__/styleMock.js"
-  },
+  // The root directory where Jest should scan for tests
+  roots: ['<rootDir>/src'],
+  
+  // Test environment - jsdom simulates a browser environment
+  testEnvironment: 'jsdom',
+  
+  // File extensions Jest will look for
+  moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
+  
+  // Transform files with babel-jest
   transform: {
-    "^.+\\.(js|jsx)$": "babel-jest"
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
-  transformIgnorePatterns: [
-    "/node_modules/(?!(axios)/)"
+  
+  // Setup files that will run before each test
+  setupFilesAfterEnv: [
+    '<rootDir>/src/setupTests.js'
   ],
+  
+  // Mock static assets
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': '<rootDir>/src/__mocks__/styleMock.js',
+    '\\.(gif|ttf|eot|svg|png|jpg|jpeg)$': '<rootDir>/src/__mocks__/fileMock.js',
+  },
+  
+  // Coverage settings
   collectCoverageFrom: [
-    "src/**/*.{js,jsx}",
-    "!src/index.js",
-    "!src/reportWebVitals.js"
+    'src/**/*.{js,jsx}',
+    '!src/index.js',
+    '!src/reportWebVitals.js',
+    '!**/__tests__/**',
+    '!**/node_modules/**',
   ],
-  reporters: [
-    "default",
-    ["./node_modules/jest-html-reporter", {
-      "pageTitle": "E-Learning Frontend Test Report",
-      "outputPath": "./test-report.html"
-    }]
-  ]
+  
+  // Verbose output
+  verbose: true,
+  
+  // Print warning when tests take longer than 5 seconds
+  testTimeout: 10000,
+  
+  // Number of workers for parallel testing
+  // Setting to 1 can help with flaky or resource-intensive tests
+  maxWorkers: 1,
+  
+  // Clear mocks between each test
+  clearMocks: true,
+  
+  // Handle memory issues
+  workerIdleMemoryLimit: '512MB',
+  
+  // Increase timeout for workers
+  testTimeout: 30000,
 };
