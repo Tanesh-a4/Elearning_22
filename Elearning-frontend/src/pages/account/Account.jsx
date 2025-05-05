@@ -99,7 +99,7 @@ const Account = ({ user }) => {
     <div className="profile-page">
       <div className="profile-header-bg">
         <div className="header-content container">
-          <div className="user-welcome">
+          <div className="user-welcome" style={{ color: "white" }}>
             <h1>Welcome back, {user?.name?.split(' ')[0]}!</h1>
             <p>Manage your account and learning journey</p>
           </div>

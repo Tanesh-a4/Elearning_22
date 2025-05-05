@@ -10,6 +10,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { Message } from './models/Message.js';
 import { Conversation } from './models/Conversation.js';
+import { connectRedis } from './config/redis.js';
 
 dotenv.config();
 
@@ -122,7 +123,12 @@ io.on('connection', (socket) => {
 });
 
 // Listen on HTTP server instead of app
-server.listen(port, () => {
+server.listen(port, async () => {
   console.log(`Server is running on http://localhost:${port}`);
-  connectDb();
+  
+  // Connect to MongoDB
+  await connectDb();
+  
+  // Connect to Redis
+  await connectRedis();
 });
