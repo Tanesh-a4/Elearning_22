@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CourseStudy.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CourseData } from "../../context/CourseContext";
-import { server } from "../../index";
+import { server } from "../../config";
 import { FaBook, FaClock, FaUser, FaCalendarAlt, FaPlayCircle, FaCheck } from "react-icons/fa";
 import Loading from "../../components/loading/Loading";
 import axios from "axios";

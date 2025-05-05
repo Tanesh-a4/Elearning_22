@@ -19,7 +19,7 @@
   import html2canvas from "html2canvas";
   import jsPDF from "jspdf";
   import axios from "axios"
-  import { server } from "../..";
+  import { server } from "../../";
 
   // Register Chart.js components
   ChartJS.register(
