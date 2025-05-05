@@ -6,7 +6,7 @@ import TryCatch from "../middlewares/TryCatch.js";
 import { Courses } from "../models/Courses.js";
 import { Progress } from "../models/Progress.js";
 import { Lecture } from "../models/Lecture.js";
-
+import { getCache, setCache, deleteCache } from '../config/redis.js';
 
 export const register = TryCatch(async (req,res) => {
     try
@@ -104,6 +104,7 @@ export const loginUser = TryCatch(async (req,res) => {
     const token  = jwt.sign({ _id : user._id},process.env.Jwt_Sec,{
         expiresIn : "15d",
     });
+    await setCache(`user:${user._id.toString()}`, JSON.stringify(user), 300);
     res.json({
         message :`welcome back ${user.name}`,
         token,
@@ -111,12 +112,23 @@ export const loginUser = TryCatch(async (req,res) => {
     })
 });
 
-
-export const myProfile = TryCatch(async (req,res) => {
-    const user = await User.findById(req.user._id)
-
-
-    res.json({user})
+export const myProfile = TryCatch(async (req, res) => {
+    const userId = req.user._id.toString();
+    
+    // Try to get user from cache
+    const cachedUser = await getCache(`user:${userId}`);
+    
+    if (cachedUser) {
+        return res.json({ user: JSON.parse(cachedUser) });
+    }
+    
+    // If not in cache, get from DB
+    const user = await User.findById(userId);
+    
+    // Cache user data (5 minutes)
+    await setCache(`user:${userId}`, JSON.stringify(user), 300);
+    
+    res.json({user});
 });
 
 export const getAllTeachers = TryCatch(async (req, res) => {
@@ -259,4 +271,13 @@ export const deleteCourse = TryCatch(async (req, res) => {
       message: "Course deleted successfully",
     });
   });
-  
+
+export const updateRole = TryCatch(async (req, res) => {
+    // ...existing code...
+    
+    // After updating the user:
+    await deleteCache(`user:${id}`);
+    
+    // ...rest of the code...
+});
+
