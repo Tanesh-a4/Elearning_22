@@ -18,20 +18,21 @@ import { User } from "../models/user.js";
  * @param {function} next - Express next function
  */
 export const isAuth = async (req, res, next) => {
-    try {
-        const token = req.headers.token;
-        if(!token) 
-           return res.status(403).json({
-            message: "Please login"
-        });
-        const decodedData = jwt.verify(token,process.env.Jwt_Sec);
-        req.user = await User.findById(decodedData._id);
-        next()
-    } catch (error) {
-        res.status(500).json({
-            message: "Login first"
-        });
-    }  
+  try {
+      const token = req.headers.token;
+      if (!token) 
+          return res.status(401).json({  // Changed from 403 to 401
+              message: "Please login"
+          });
+      
+      const decodedData = jwt.verify(token, process.env.Jwt_Sec);
+      req.user = await User.findById(decodedData._id);
+      next();
+  } catch (error) {
+      res.status(401).json({  // Changed from 500 to 401
+          message: "Invalid or expired token"
+      });
+  }  
 };
 
 /**
