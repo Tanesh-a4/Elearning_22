@@ -13,7 +13,7 @@ const CourseDescription = ({ user }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { fetchUser } = UserData();
+  // const { fetchUser } = UserData();
   const { fetchCourse, course, fetchCourses, fetchMyCourse } = CourseData();
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import React from "react";
-import { MdDashboard, MdPerson, MdEmail, MdSchool, MdVideoLibrary, MdSettings, MdStar } from "react-icons/md";
+import { MdDashboard, MdPerson, MdEmail, MdSchool, MdVideoLibrary } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
-import { FaChalkboardTeacher, FaUserShield, FaCertificate, FaBell, FaBookmark } from "react-icons/fa";
+import { FaChalkboardTeacher, FaUserShield, FaBell } from "react-icons/fa";
 import { UserData } from "../../context/UserContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";

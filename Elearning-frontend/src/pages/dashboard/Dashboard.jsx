@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react"; // Add useEffect
 import "./Dashboard.css";
 import { CourseData } from "../../context/CourseContext";
 import { UserData } from "../../context/UserContext";
@@ -11,13 +11,17 @@ const Dashboard = () => {
     const { userCourses, fetchUserCourses } = CourseData();
     const { user } = UserData();
 
+    useEffect(() => {
+        fetchUserCourses();
+    }, [fetchUserCourses]); // ✅ Now you are using it.
+
     const completedCourses = 0; // Placeholder value
     const inProgressCourses = userCourses ? userCourses.length : 0;
     const totalCourses = inProgressCourses + completedCourses;
 
     return (
-        <div style={{marginTop: "100px"}}>
-        <Layout role="user">
+        <div style={{ marginTop: "100px" }}>
+            <Layout role="user">
             <div className="db-container">
             <div className="db-header">
                 <div className="db-welcome">

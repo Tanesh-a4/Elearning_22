@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '../../context/ChatContext';
 import { UserData } from '../../context/UserContext';
-import { FaPaperPlane, FaUserCircle, FaSearch, FaTimes, FaCircle, FaBell } from 'react-icons/fa';
+import { FaPaperPlane, FaUserCircle, FaSearch, FaTimes, FaBell } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const Chat = () => {
@@ -14,8 +14,7 @@ const Chat = () => {
     loading, 
     selectConversation, 
     sendMessage,
-    fetchContacts,
-    fetchConversations 
+    fetchContacts
   } = useChat();
 console.log(contacts);
 

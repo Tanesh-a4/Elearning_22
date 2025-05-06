@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState,useCallback } from "react";
 import axios from "axios";
 import { server } from "../index";
 
@@ -9,7 +9,7 @@ export const CourseContextProvider = ({ children }) => {
     const [course, setCourse] = useState([]);
     const [mycourse, setMyCourse] = useState([]);
     const [userCourses, setUserCourses] = useState([]);
-    const [isAuth, setIsAuth] = useState(false);
+    // const [isAuth, setIsAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([]);
 
@@ -38,7 +38,7 @@ export const CourseContextProvider = ({ children }) => {
                     token: localStorage.getItem("token"),
                 }
             });
-            setIsAuth(true);
+            // setIsAuth(true);
             setUser(data.user);
             setLoading(false);
         } catch (error) {
@@ -66,7 +66,7 @@ export const CourseContextProvider = ({ children }) => {
         }
     };
 
-    const fetchUserCourses = async () => {
+    const fetchUserCourses = useCallback(async () => {
         if (!user || !user._id) {
             console.error("User ID is undefined, skipping course fetch.");
             return;
@@ -83,7 +83,7 @@ export const CourseContextProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    };
+    },[user]);  
 
     useEffect(() => {
         fetchUser();

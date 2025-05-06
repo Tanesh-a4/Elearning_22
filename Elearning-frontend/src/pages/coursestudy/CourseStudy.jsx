@@ -3,11 +3,11 @@ import "./CourseStudy.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CourseData } from "../../context/CourseContext";
 import { server } from "../../config";
-import { FaBook, FaClock, FaUser, FaCalendarAlt, FaPlayCircle, FaCheck } from "react-icons/fa";
+import { FaClock, FaUser, FaCalendarAlt, FaPlayCircle, FaCheck } from "react-icons/fa";
 import Loading from "../../components/loading/Loading";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { FaPlay, FaPlus, FaTrash, FaTimes, FaUpload, FaVideo } from "react-icons/fa";
+// import toast from "react-hot-toast";
+import { FaPlay,FaVideo } from "react-icons/fa";
 
 const CourseStudy = ({ user }) => {
   const [lectures, setLectures] = useState([]);

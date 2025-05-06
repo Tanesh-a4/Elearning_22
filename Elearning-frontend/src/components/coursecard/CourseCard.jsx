@@ -116,6 +116,7 @@ const CourseCard = ({ course }) => {
       className="cc-wrapper"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ transform: isHovered ? 'scale(1.02)' : 'scale(1)', transition: 'transform 0.3s ease' }}
     >
       <div className="cc-card">
         <div className="cc-image-container">

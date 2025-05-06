@@ -1,7 +1,7 @@
 import React from 'react';
 import './About.css';
-import { FaGraduationCap, FaLaptopCode, FaChartLine, FaUsers, FaGlobe, FaAward, FaBookOpen, FaClock, FaCertificate } from 'react-icons/fa';
-import Testimonials from '../../components/testimonials/Testimonials';
+import { FaGraduationCap, FaLaptopCode, FaChartLine, FaUsers,FaClock, FaCertificate } from 'react-icons/fa';
+// import Testimonials from '../../components/testimonials/Testimonials';
 import { Link } from 'react-router-dom';
 
 const About = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import './Home.css';
 import Testimonials from '../../components/testimonials/Testimonials.jsx';
@@ -9,7 +9,7 @@ import FaqsHome from '../../components/faqshome/FaqsHome.jsx';
 import TeachersHome from '../../components/teachershome/TeachersHome.jsx';
 
 const Home = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { ref: cardRef, inView } = useInView({
     triggerOnce: true,

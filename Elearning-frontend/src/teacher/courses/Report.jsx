@@ -1,6 +1,6 @@
   import React, { useState, useEffect } from "react";
-  import { data, useParams } from "react-router-dom";
-  import { Bar, Line, Doughnut } from "react-chartjs-2";
+  import {  useParams } from "react-router-dom";
+  import { Doughnut } from "react-chartjs-2";
   import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,7 +13,7 @@
     Tooltip,
     Legend,
   } from "chart.js";
-  import { FaTimes, FaDownload, FaUserGraduate, FaMoneyBillWave, FaStar, FaCalendarAlt } from "react-icons/fa";
+  import { FaTimes, FaDownload, FaUserGraduate, FaMoneyBillWave, FaCalendarAlt } from "react-icons/fa";
   import { CourseData } from "../../context/CourseContext";
   import "./Report.css";
   import html2canvas from "html2canvas";
@@ -37,7 +37,7 @@
   const Report = ({ course, closeReport }) => {
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { fetchCourseAnalytics } = CourseData();
+    // const { fetchCourseAnalytics } = CourseData();
     const [lectures, setLectures] = useState([]);
     const [error, setError] = useState(null);
     const [avgProgress, setAvgProgress] = useState(null);
