@@ -1,6 +1,6 @@
 // Jest setup file - place this in your project root or src directory
 import { TextEncoder, TextDecoder } from 'util';
-
+import '@testing-library/jest-dom'
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
