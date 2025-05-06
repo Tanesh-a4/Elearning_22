@@ -62,7 +62,9 @@ jobs:
       working-directory: Elearning-frontend
       run: npm install @testing-library/dom --save-dev
 
-    # Set CI=false to ignore ESLint warnings
+
+    
+
     - name: Set CI environment variable to false
       run: echo "CI=false" >> $GITHUB_ENV
 

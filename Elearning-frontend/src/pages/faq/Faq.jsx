@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Faq.css";
 import { FiChevronDown, FiChevronUp, FiSearch } from "react-icons/fi";
-import { MdOutlineQuestionAnswer, MdLightbulb, MdSupportAgent, MdSchool, MdPayment, MdAccessTime, MdPeople, MdStar } from "react-icons/md";
+import { MdOutlineQuestionAnswer, MdLightbulb, MdSupportAgent, MdSchool, MdPayment, MdPeople } from "react-icons/md";
 
 const FaqSection = () => {
   const [activeCategory, setActiveCategory] = useState(0);

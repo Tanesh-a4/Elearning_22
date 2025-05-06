@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../admin/Utils/Layout";
 import { UserData } from "../../context/UserContext";
 import { server } from "../../index";
@@ -9,13 +9,9 @@ import {
   FaGraduationCap, 
   FaMoneyBillWave, 
   FaUserGraduate, 
-  FaChartLine, 
+  
   FaBook,
-  FaPlusCircle,
-  FaEye,
   FaUsers,
-  FaClock,
-  FaStar
 } from "react-icons/fa";
 
 const TeacherDashboard = () => {

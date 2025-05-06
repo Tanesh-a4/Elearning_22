@@ -1,10 +1,10 @@
 import React from "react";
 import "./SideColumn.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { FaFilter, FaCheck } from "react-icons/fa";
 
 const SideColumn = ({ filters, setFilters }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Handler for checkbox changes
   const handleCheckboxChange = (type, value) => {

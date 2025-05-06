@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Lecture.css";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../";
 import Loading from "../../components/loading/Loading";
 import toast from "react-hot-toast";
-import { TiTick } from "react-icons/ti";
+// import { TiTick } from "react-icons/ti";
 import { FaPlay, FaPlus, FaTrash, FaCheck, FaTimes, FaUpload, FaVideo } from "react-icons/fa";
 
 const Lecture = ({ user }) => {
@@ -15,7 +15,7 @@ const Lecture = ({ user }) => {
   const [lecLoading, setLecLoading] = useState(false);
   const [show, setShow] = useState(false);
   const params = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [video, setvideo] = useState("");

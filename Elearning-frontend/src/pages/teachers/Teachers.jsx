@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserData } from '../../context/UserContext';
-import { FaLinkedin, FaGraduationCap, FaChalkboardTeacher, FaUserAlt, FaStar } from 'react-icons/fa';
+import {  FaGraduationCap, FaChalkboardTeacher, FaUserAlt, FaStar } from 'react-icons/fa';
 import { MdEmail, MdSchool } from 'react-icons/md';
 import "./Teacher.css";
 

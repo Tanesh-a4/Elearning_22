@@ -1,7 +1,7 @@
 import React from 'react';
 import Chat from '../../components/chat/Chat';
 import { ChatProvider } from '../../context/ChatContext';
-import Layout from '../../admin/Utils/Layout';
+// import Layout from '../../admin/Utils/Layout';
 
 const ChatPage = () => {
   return (
