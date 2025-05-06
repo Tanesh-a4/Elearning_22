@@ -16,6 +16,7 @@ export const ChatProvider = ({ children }) => {
   const [unreadCounts, setUnreadCounts] = useState({});
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [deletingMessage, setDeletingMessage] = useState(false);
 
   // Initialize socket connection
   useEffect(() => {
@@ -74,8 +75,22 @@ export const ChatProvider = ({ children }) => {
         fetchConversations();
       });
       
+      // Listen for message deletion events
+      socket.on("messageDeleted", ({ messageId, deleteType }) => {
+        console.log("Message deleted via socket:", messageId, deleteType);
+        
+        if (deleteType === 'for_everyone') {
+          // Remove message from current messages if present
+          setMessages(prev => prev.filter(msg => msg._id !== messageId));
+        }
+        
+        // Update conversations list to reflect changes
+        fetchConversations();
+      });
+      
       return () => {
         socket.off("newMessage");
+        socket.off("messageDeleted");
       };
     }
   }, [socket, currentConversation, user]);
@@ -229,6 +244,72 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  // New function to delete a message
+  const deleteMessage = async (messageId, deleteOption) => {
+    console.log("the delete from frontend is called")
+    if (!messageId || !currentConversation?._id) {
+      toast.error("Message or conversation ID is missing");
+      return;
+    }
+    
+    try {
+      setDeletingMessage(true);
+      console.log(`Deleting message: ${messageId}, type: ${deleteOption}`);
+      
+      // Map UI delete options to backend delete types
+      const deleteType = deleteOption === 'for_me' ? 'deleteForMe' : 'deleteForEveryone';
+
+      console.log(deleteType)
+      const { data } = await axios.post(`${server}/api/chat/conversation/clear`,
+  { 
+    conversationId: currentConversation._id,
+    deleteType,
+    messageId
+  },
+  { headers: { token: localStorage.getItem("token") } }
+);
+
+      
+      console.log("Message deleted response:", data);
+      
+      // Update UI based on delete type
+      if (deleteOption === 'for_me') {
+        // Optimistically update UI to hide this message for current user
+        setMessages(prev => prev.filter(msg => msg._id !== messageId));
+        toast.success("Message deleted for you");
+      } else if (deleteOption === 'for_everyone') {
+        // Remove message from UI
+        setMessages(prev => prev.filter(msg => msg._id !== messageId));
+        
+        // Notify others about message deletion via socket
+        if (socket) {
+          socket.emit("deleteMessage", {
+            messageId,
+            conversationId: currentConversation._id,
+            deleteType: deleteOption
+          });
+        }
+        
+        toast.success("Message deleted for everyone");
+      }
+      
+      // Refresh conversations to reflect changes
+      fetchConversations();
+      
+      return data;
+    } catch (error) {
+      console.error("Failed to delete message:", error);
+      
+      // Extract error message if possible
+      const errorMsg = error.response?.data?.message || "Failed to delete message";
+      toast.error(errorMsg);
+      
+      throw error;
+    } finally {
+      setDeletingMessage(false);
+    }
+  };
+
   // Load conversations on initial render
   useEffect(() => {
     if (isAuth) {
@@ -245,11 +326,13 @@ export const ChatProvider = ({ children }) => {
         contacts,
         unreadCounts,
         loading,
+        deletingMessage,
         fetchConversations,
         fetchMessages,
         sendMessage,
         selectConversation,
-        fetchContacts
+        fetchContacts,
+        deleteMessage
       }}
     >
       {children}
