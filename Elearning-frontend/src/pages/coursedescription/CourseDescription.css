@@ -93,6 +93,7 @@
 /* Main container */
 .cd-container {
   width: 100%;
+  margin-top: 7%;
   background-color: #f8f9fa;
   min-height: calc(100vh - 60px);
 }
@@ -127,6 +128,7 @@
 }
 
 .cd-subtitle {
+  color:#00c9bc;
   font-size: 18px;
   opacity: 0.9;
   margin: 0 0 25px;

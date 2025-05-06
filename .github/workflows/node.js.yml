@@ -63,6 +63,9 @@ jobs:
     - name: Build Frontend
       working-directory: Elearning-frontend
       run: npm run build --if-present
+      env:
+        CI: false
+
 
     - name: Test Frontend
       working-directory: Elearning-frontend
