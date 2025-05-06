@@ -17,14 +17,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # Setup Node.js (without caching at root)
+    # Setup Node.js
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        # no cache here because no lock file at root
 
-    # --- Backend Install, Build, Test ---
+    # Cache Backend dependencies
     - name: Cache Backend dependencies
       uses: actions/cache@v4
       with:
@@ -45,7 +44,7 @@ jobs:
       working-directory: Elearning-server
       run: npm test
 
-    # --- Frontend Install, Build, Test ---
+    # Cache Frontend dependencies
     - name: Cache Frontend dependencies
       uses: actions/cache@v4
       with:
@@ -63,7 +62,9 @@ jobs:
       working-directory: Elearning-frontend
       run: npm install @testing-library/dom --save-dev
 
-    # Set CI to false to ignore ESLint warnings
+
+    
+
     - name: Set CI environment variable to false
       run: echo "CI=false" >> $GITHUB_ENV
 
