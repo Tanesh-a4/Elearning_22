@@ -1,3 +1,5 @@
 **/*.env
 **/node_modules
 ./git
+*/test-report.html
+*/coverage/
