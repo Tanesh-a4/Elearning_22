@@ -28,7 +28,7 @@ import TeacherCourses from './teacher/courses/TeacherCourses';
 import AddCourse from './components/addcourse/AddCourse';
 import Report from './teacher/courses/Report';
 import ChatPage from './pages/chat/ChatPage';
-// import ChatButton from './components/ChatButton/ChatButton';
+import ChatButton from './components/ChatButton/ChatButton';
 import { FaComment } from 'react-icons/fa'; // Add this import
 import { useChat } from './context/ChatContext';
 import { ChatProvider } from './context/ChatContext';

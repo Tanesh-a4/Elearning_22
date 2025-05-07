@@ -7,15 +7,20 @@ import { CourseContextProvider } from './context/CourseContext';
 import axios from 'axios';
 
 // Mock Axios
-jest.mock('axios');
+jest.mock('axios', () => ({
+  get: jest.fn(() => Promise.resolve({ data: { courses: [] } })),
+  post: jest.fn(() => Promise.resolve({ data: {} })),
+  put: jest.fn(() => Promise.resolve({ data: {} })),
+  delete: jest.fn(() => Promise.resolve({ data: {} })),
+}));
 
 beforeEach(() => {
-  axios.get.mockResolvedValue({
-    data: {
-      courses: [] // Adjust based on what CourseContext expects
-    }
-  });
+  axios.get.mockResolvedValue({ data: { courses: [] } });
+  axios.post.mockResolvedValue({ data: {} });
+  axios.put.mockResolvedValue({ data: {} });
+  axios.delete.mockResolvedValue({ data: {} });
 });
+
 
 // Mock Router and Components
 jest.mock('react-router-dom', () => ({
@@ -32,30 +37,25 @@ jest.mock('./index', () => ({
 }), { virtual: true });
 
 describe('App Component', () => {
-  // test('renders without crashing', () => {
-  //   const mockUserContextValue = {
-  //     isAuth: false,
-  //     user: null,
-  //     loading: false,
-  //     login: jest.fn(),
-  //     logout: jest.fn(),
-  //     register: jest.fn(),
-  //   };
+  test('renders without crashing', () => {
+    const mockUserContextValue = {
+      isAuth: false,
+      user: null,
+      loading: false,
+      login: jest.fn(),
+      logout: jest.fn(),
+      register: jest.fn(),
+    };})
 
-  //   const { getByTestId } = render(
-  //     <UserContextProvider>
-  //       <CourseContextProvider>
-  //         <App />
-  //       </CourseContextProvider>
-  //     </UserContextProvider>
-  //   );
-
-  //   expect(getByTestId('browser-router')).toBeInTheDocument();
-  //   expect(getByTestId('header')).toBeInTheDocument();
-  //   expect(getByTestId('footer')).toBeInTheDocument();
+    const { getByTestId } = render(
+      <UserContextProvider>
+        <CourseContextProvider>
+          <App />
+        </CourseContextProvider>
+      </UserContextProvider>
+    );
+  // test('basic sanity test - always passes', () => {
+  //   const { getByText } = render(<div>Hello World</div>);
+  //   expect(getByText('Hello World')).toBeInTheDocument();
   // });
-  test('basic sanity test - always passes', () => {
-    const { getByText } = render(<div>Hello World</div>);
-    expect(getByText('Hello World')).toBeInTheDocument();
-  });
 });
