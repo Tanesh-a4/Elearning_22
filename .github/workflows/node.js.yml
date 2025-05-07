@@ -64,14 +64,14 @@ jobs:
 
     - name: Verify server URL in index.js (only on main branch)
       if: github.ref == 'refs/heads/main'
-      working-directory: Elearning-frontend
       run: |
-        if grep -q 'export const server = "https://elearning-22.onrender.com";' Elearning-frontend/src/index.js; then
+        if grep -q 'export const server = "https://elearning-22.onrender.com";' Elearning_22/Elearning-frontend/src/index.js; then
           echo "✅ Server URL is correct."
         else
           echo "❌ Server URL is incorrect!"
           exit 1
         fi
+
 
     
 
