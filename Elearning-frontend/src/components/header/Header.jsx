@@ -76,12 +76,13 @@ const Header = ({ isAuth }) => {
       />
     </svg>
   </Link>
-  <Link
+    <Link
     to={isAuth ? "/account" : "/login"}
-    className="px-4 py-2 rounded-full text-sm font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
+    className="no-underline px-4 py-2 rounded-full text-sm font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
   >
     {isAuth ? "Account" : "Login"}
   </Link>
+
 
 </div>
 
@@ -125,7 +126,7 @@ const Header = ({ isAuth }) => {
         ))}
         <Link
           to={isAuth ? "/account" : "/login"}
-          className="px-4 py-2 rounded-full transition-all shadow-md text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700"
+          className="no-underline px-4 py-2 rounded-full transition-all shadow-md text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700"
           onClick={() => setMenuOpen(false)}
         >
           {isAuth ? "Account" : "Login"}

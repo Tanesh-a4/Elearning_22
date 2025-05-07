@@ -217,3 +217,72 @@ export const getContactsList = TryCatch(async (req, res) => {
     });
   }
 }); 
+
+// Delete all messages in a conversation
+export const clearConversation = TryCatch(async (req, res) => {
+  console.log("hi");
+  
+  const { conversationId, deleteType } = req.body;
+  console.log(conversationId);
+  console.log(deleteType);
+  
+  
+  const userId = req.user._id;
+  
+  // Verify user is part of this conversation
+  const conversation = await Conversation.findOne({
+    _id: conversationId,
+    participants: userId
+  });
+  
+  if (!conversation) {
+    return res.status(403).json({
+      success: false,
+      message: "You don't have access to this conversation"
+    });
+  }
+  
+  if (deleteType === "deleteForMe") {
+    // Remove user from visibleTo for all messages in this conversation
+    await Message.updateMany(
+      { conversationId },
+      { $pull: { visibleTo: userId } }
+    );
+    
+    // Remove user from conversation participants
+    await Conversation.updateOne(
+      { _id: conversationId },
+      { $pull: { participants: userId } }
+    );
+    
+    return res.status(200).json({
+      success: true,
+      message: "Conversation cleared for you"
+    });
+    
+  } else if (deleteType === "deleteForEveryone") {
+    // Only admin can delete entire conversation for everyone
+    if (req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Only admins can delete conversations for everyone"
+      });
+    }
+    
+    // Delete all messages
+    await Message.deleteMany({ conversationId });
+    
+    // Delete the conversation
+    await Conversation.deleteOne({ _id: conversationId });
+    
+    return res.status(200).json({
+      success: true,
+      message: "Conversation deleted for everyone"
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid delete type. Use 'deleteForMe' or 'deleteForEveryone'"
+    });
+  }
+});
