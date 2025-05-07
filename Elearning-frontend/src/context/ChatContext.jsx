@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import axios from 'axios';
 import { server } from "../index.js";
 import { UserData } from "./UserContext.jsx";
@@ -24,18 +24,18 @@ export const ChatProvider = ({ children }) => {
       try {
         console.log("Attempting to connect socket.io");
         const newSocket = io(server);
-
+        
         newSocket.on('connect', () => {
           console.log('Socket connected successfully');
           newSocket.emit("join", user._id);
         });
-
+        
         newSocket.on('connect_error', (error) => {
           console.error('Socket connection error:', error);
         });
-
+        
         setSocket(newSocket);
-
+        
         return () => {
           console.log("Disconnecting socket");
           newSocket.disconnect();
@@ -97,19 +97,20 @@ export const ChatProvider = ({ children }) => {
 
   const fetchConversations = async () => {
     if (!isAuth) return;
-
+    
     try {
       setLoading(true);
       console.log("Fetching conversations");
-
+      
       const { data } = await axios.get(`${server}/api/chat/conversations`, {
         headers: { token: localStorage.getItem("token") }
       });
-
+      
       console.log("Conversations fetched:", data);
-
+      
       setConversations(data.data || []);
-
+      
+      // Extract unread counts
       const counts = {};
       if (Array.isArray(data.data)) {
         data.data.forEach(conv => {
@@ -118,6 +119,7 @@ export const ChatProvider = ({ children }) => {
           }
         });
       }
+      
       setUnreadCounts(counts);
     } catch (error) {
       console.error("Failed to fetch conversations:", error);
@@ -125,29 +127,31 @@ export const ChatProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [isAuth, user?._id]);
+  };
 
   const fetchMessages = async (conversationId) => {
     if (!conversationId || conversationId.startsWith('temp-')) {
       setMessages([]);
       return;
     }
-
+    
     try {
       setLoading(true);
       console.log(`Fetching messages for conversation: ${conversationId}`);
-
+      
       const { data } = await axios.get(`${server}/api/chat/conversations/${conversationId}/messages`, {
         headers: { token: localStorage.getItem("token") }
       });
-
+      
       setMessages(data.data || []);
-
+      
+      // Mark as read in the UI
       setUnreadCounts(prev => ({
         ...prev,
         [conversationId]: 0
       }));
-
+      
+      // Notify server messages are read
       if (socket && user?._id) {
         socket.emit("markAsRead", {
           conversationId,
@@ -167,22 +171,24 @@ export const ChatProvider = ({ children }) => {
       toast.error("Missing recipient or message content");
       return;
     }
-
+    
     try {
       console.log(`Sending message to: ${receiverId}`);
-
-      const { data } = await axios.post(`${server}/api/chat/messages`,
+      
+      const { data } = await axios.post(`${server}/api/chat/messages`, 
         { receiverId, content },
         { headers: { token: localStorage.getItem("token") } }
       );
-
+      
       console.log("Message sent successfully:", data);
-
-      if (currentConversation &&
-        currentConversation.participants.some(p => p?._id === receiverId)) {
+      
+      // If in a conversation, add to messages
+      if (currentConversation && 
+          currentConversation.participants.some(p => p?._id === receiverId)) {
         setMessages(prev => [...prev, data.data]);
       }
-
+      
+      // Emit socket event
       if (socket && user) {
         socket.emit("sendMessage", {
           ...data.data,
@@ -193,14 +199,18 @@ export const ChatProvider = ({ children }) => {
           }
         });
       }
-
+      
+      // Refresh conversations
       fetchConversations();
-
+      
       return data.data;
     } catch (error) {
       console.error("Failed to send message:", error);
+      
+      // Extract error message if possible
       const errorMsg = error.response?.data?.message || "Failed to send message";
       toast.error(errorMsg);
+      
       throw error;
     }
   };
@@ -209,11 +219,11 @@ export const ChatProvider = ({ children }) => {
     try {
       setLoading(true);
       console.log("Fetching contacts");
-
+      
       const { data } = await axios.get(`${server}/api/chat/contacts`, {
         headers: { token: localStorage.getItem("token") }
       });
-
+      
       console.log("Contacts fetched:", data);
       setContacts(data.data || []);
     } catch (error) {
@@ -226,7 +236,7 @@ export const ChatProvider = ({ children }) => {
 
   const selectConversation = async (conversation) => {
     setCurrentConversation(conversation);
-
+    
     if (conversation && !conversation._id.startsWith('temp-')) {
       await fetchMessages(conversation._id);
     } else {
@@ -305,38 +315,7 @@ export const ChatProvider = ({ children }) => {
     if (isAuth) {
       fetchConversations();
     }
-  }, [isAuth, fetchConversations]); // <-- ADD fetchConversations here ✅
-
-  // Listen for new messages
-  useEffect(() => {
-    if (socket) {
-      socket.on("newMessage", (message) => {
-        console.log("New message received via socket:", message);
-
-        if (currentConversation?._id === message.conversationId) {
-          setMessages(prev => [...prev, message]);
-
-          socket.emit("markAsRead", {
-            conversationId: message.conversationId,
-            userId: user._id
-          });
-        } else {
-          try {
-            const audio = new Audio('/notification.mp3');
-            audio.play();
-          } catch (error) {
-            console.log("Audio notification failed:", error);
-          }
-        }
-
-        fetchConversations();
-      });
-
-      return () => {
-        socket.off("newMessage");
-      };
-    }
-  }, [socket, currentConversation, user, fetchConversations]); // <-- ALSO add fetchConversations here ✅
+  }, [isAuth]);
 
   return (
     <ChatContext.Provider

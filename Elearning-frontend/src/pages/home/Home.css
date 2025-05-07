@@ -21,7 +21,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgb(14, 14, 14)),
+  background: linear-gradient(135deg, rgba(0, 89, 92, 0.8) 0%, rgba(0, 36, 61, 0.85) 100%),
     url("../../../public/images/bgback.jpg") fixed no-repeat;
   background-size: cover;
 }
@@ -303,7 +303,7 @@ button:hover {
 .home-banner-section {
   position: relative;
   padding: 100px 20px;
-  background: linear-gradient(135deg, rgba(0, 89, 92, 0.9) 0%, rgba(0, 36, 61, 0.85) 100%), 
+  background: linear-gradient(135deg, rgba(0, 89, 92, 0.8) 0%, rgba(0, 36, 61, 0.85) 100%), 
               url('../../../public/images/bgback.jpg') center/cover no-repeat fixed;
   overflow: hidden;
   z-index: 1;
