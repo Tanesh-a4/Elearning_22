@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '../../context/ChatContext';
 import { UserData } from '../../context/UserContext';
-import { FaPaperPlane, FaUserCircle, FaSearch, FaTimes, FaBell } from 'react-icons/fa';
+import { FaPaperPlane, FaUserCircle, FaSearch, FaTimes, FaCircle, FaBell, FaTrash, FaEllipsisV } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const Chat = () => {
@@ -14,9 +14,10 @@ const Chat = () => {
     loading, 
     selectConversation, 
     sendMessage,
-    fetchContacts
+    fetchContacts,
+    fetchConversations,
+    deleteMessage
   } = useChat();
-console.log(contacts);
 
   const { user } = UserData();
   const [messageText, setMessageText] = useState('');
@@ -27,6 +28,11 @@ console.log(contacts);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [prevMessageLength, setPrevMessageLength] = useState(0);
   const messagesContainerRef = useRef(null);
+  
+  // State for message deletion
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [deleteOption, setDeleteOption] = useState('for_me');
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -173,6 +179,30 @@ console.log(contacts);
     return name && typeof name === 'string' ? name.charAt(0) : '?';
   };
 
+  // Handle message delete options
+  const handleDeleteClick = (message) => {
+    setSelectedMessage(message);
+    setDeleteOption('for_me'); // Default option
+    setShowDeleteModal(true);
+  };
+
+  // Replace the stub handleDeleteMessage function in the Chat component with this implementation:
+
+const handleDeleteMessage = async () => {
+  if (!selectedMessage || !selectedMessage._id) {
+    toast.error("Message not found");
+    return;
+  }
+  
+  try {
+    await deleteMessage(selectedMessage._id, deleteOption);
+    setShowDeleteModal(false);
+    setSelectedMessage(null);
+  } catch (error) {
+    console.error("Error deleting message:", error);
+    // Error toast is already handled in the context
+  }
+};
   return (
     <div className="flex h-[calc(100vh-120px)] mx-5 my-5 rounded-lg overflow-hidden shadow-lg">
       {/* Sidebar */}
@@ -336,7 +366,7 @@ console.log(contacts);
                           </div>
                         </div>
                       )}
-                      <div className={`max-w-xs lg:max-w-md`}>
+                      <div className={`max-w-xs lg:max-w-md relative`}>
                         <div className={`rounded-2xl px-4 py-2 ${
                           isCurrentUser 
                             ? 'bg-teal-600 text-white rounded-br-none' 
@@ -344,6 +374,21 @@ console.log(contacts);
                         }`}>
                           <p className="break-words">{msg.content}</p>
                         </div>
+                        
+                        {/* Improved Delete Button - Always visible for current user's messages */}
+                        {isCurrentUser && (
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteClick(msg);
+                            }}
+                            className="absolute -right-8 top-2 p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-md transition-all duration-200"
+                            title="Delete message"
+                          >
+                            <FaTrash size={14} />
+                          </button>
+                        )}
+                        
                         <span className={`text-xs ${isCurrentUser ? 'text-right' : 'text-left'} block mt-1 text-gray-500`}>
                           {formatTime(msg.createdAt)}
                         </span>
@@ -474,6 +519,62 @@ console.log(contacts);
                 )}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Message Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg w-full max-w-sm p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Delete Message</h3>
+            
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="delete_for_me"
+                  name="delete_option"
+                  value="for_me"
+                  checked={deleteOption === 'for_me'}
+                  onChange={() => setDeleteOption('for_me')}
+                  className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300"
+                />
+                <label htmlFor="delete_for_me" className="ml-2 block text-sm text-gray-700">
+                  Delete for me
+                </label>
+              </div>
+              
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="delete_for_everyone"
+                  name="delete_option"
+                  value="for_everyone"
+                  checked={deleteOption === 'for_everyone'}
+                  onChange={() => setDeleteOption('for_everyone')}
+                  className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300"
+                />
+                <label htmlFor="delete_for_everyone" className="ml-2 block text-sm text-gray-700">
+                  Delete for everyone
+                </label>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteMessage}
+                className="px-4 py-2 bg-red-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

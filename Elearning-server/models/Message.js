@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
   sender: {
@@ -13,17 +13,33 @@ const messageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
-    trim: true
+    required: true
+  },
+  conversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Conversation',
+    required: true
   },
   isRead: {
     type: Boolean,
     default: false
   },
-  conversationId: {
+  visibleTo: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Conversation'
+    ref: 'User'
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
-}, { timestamps: true });
+});
+
+// Middleware to set visibleTo field to include both sender and receiver by default
+messageSchema.pre('save', function(next) {
+  if (this.isNew && (!this.visibleTo || this.visibleTo.length === 0)) {
+    this.visibleTo = [this.sender, this.receiver];
+  }
+  next();
+});
 
 export const Message = mongoose.model('Message', messageSchema);
