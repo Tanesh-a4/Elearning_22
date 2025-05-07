@@ -8,7 +8,7 @@ import { CourseContextProvider } from './context/CourseContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-export const server = "http://localhost:5000";
+export const server = "https://elearning-22.onrender.com";
 
 function renderApp() {
   const rootElement = document.getElementById('root');
