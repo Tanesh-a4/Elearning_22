@@ -1,15 +1,36 @@
-import React from 'react';
-import {  Link } from 'react-router-dom';
+import React, { useEffect, useState, lazy } from 'react';
+import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import './Home.css';
-import Testimonials from '../../components/testimonials/Testimonials.jsx';
-import CoursesHome from '../../components/courseshome/CoursesHome.jsx';
-import Slider from '../../components/slider/Slider.jsx';
-import FaqsHome from '../../components/faqshome/FaqsHome.jsx';
-import TeachersHome from '../../components/teachershome/TeachersHome.jsx';
+import LazySection from '../../components/LazySection.jsx';
+import { 
+  SliderSkeleton, 
+  CoursesHomeSkeleton, 
+  TeachersHomeSkeleton, 
+  TestimonialsSkeleton 
+} from '../../components/skeletons/ComponentSkeletons.jsx';
+
+// Lazy imports
+const Slider = lazy(() => import('../../components/slider/Slider.jsx'));
+const CoursesHome = lazy(() => import('../../components/courseshome/CoursesHome.jsx'));
+const TeachersHome = lazy(() => import('../../components/teachershome/TeachersHome.jsx'));
+const Testimonials = lazy(() => import('../../components/testimonials/Testimonials.jsx'));
+const FaqsHome = lazy(() => import('../../components/faqshome/FaqsHome.jsx'));
 
 const Home = () => {
-  // const navigate = useNavigate();
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  useEffect(() => {
+    let scrollTimer;
+    const handleScroll = () => {
+      setIsScrolling(true);
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => setIsScrolling(false), 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const { ref: cardRef, inView } = useInView({
     triggerOnce: true,
@@ -18,10 +39,22 @@ const Home = () => {
 
   return (
     <div className="home-page-container">
-      <Slider />
-      <CoursesHome />
-      <TeachersHome />
-      <FaqsHome />
+      <LazySection fallback={<SliderSkeleton />}>
+        <Slider pauseAnimations={isScrolling} />
+      </LazySection>
+      
+      <LazySection fallback={<CoursesHomeSkeleton />}>
+        <CoursesHome />
+      </LazySection>
+      
+      <LazySection fallback={<TeachersHomeSkeleton />}>
+        <TeachersHome />
+      </LazySection>
+      
+      <LazySection fallback={<div className="skeleton-section" />}>
+        <FaqsHome />
+      </LazySection>
+      
       <div className="home-banner-section">
         <div
           className={`home-banner-card ${inView ? 'home-banner-visible' : ''}`}
@@ -37,7 +70,10 @@ const Home = () => {
           </Link>
         </div>
       </div>
-      <Testimonials />
+      
+      <LazySection fallback={<TestimonialsSkeleton />}>
+        <Testimonials />
+      </LazySection>
     </div>
   );
 };

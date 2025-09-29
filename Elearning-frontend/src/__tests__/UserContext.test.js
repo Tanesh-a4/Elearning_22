@@ -84,7 +84,7 @@ describe('UserContext', () => {
     localStorageMock.getItem.mockImplementation(() => null);
 
     axios.get.mockImplementation((url) => {
-      if (url.includes('/api/user/me')) {
+      if (url.includes('/api/ ')) {
         return Promise.resolve({
           data: {
             user: { name: 'Test User', email: 'test@example.com', _id: '123' }
