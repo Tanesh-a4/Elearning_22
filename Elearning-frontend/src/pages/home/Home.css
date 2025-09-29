@@ -22,7 +22,7 @@ body {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(0, 89, 92, 0.8) 0%, rgba(0, 36, 61, 0.85) 100%),
-    url("../../../public/images/bgback.jpg") fixed no-repeat;
+    url("../../../public/images/images.jpeg") fixed no-repeat;
   background-size: cover;
 }
 
@@ -304,7 +304,7 @@ button:hover {
   position: relative;
   padding: 100px 20px;
   background: linear-gradient(135deg, rgba(0, 89, 92, 0.8) 0%, rgba(0, 36, 61, 0.85) 100%), 
-              url('../../../public/images/bgback.jpg') center/cover no-repeat fixed;
+              url('../../../public/images/images.jpeg') center/cover no-repeat fixed;
   overflow: hidden;
   z-index: 1;
 }

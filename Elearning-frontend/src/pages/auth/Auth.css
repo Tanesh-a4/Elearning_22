@@ -24,7 +24,7 @@
       rgba(0, 89, 92, 0.95) 0%,
       rgba(0, 36, 61, 0.9) 100%
     ),
-    url("../../../public/images/bgback.jpg") center/cover no-repeat fixed;
+    url("../../../public/images/images.jpeg") center/cover no-repeat fixed;
   padding: 70px 20px;
   box-sizing: border-box;
 }

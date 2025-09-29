@@ -5,7 +5,7 @@
       rgba(4, 106, 106, 0.9) 0%,
       rgba(3, 80, 80, 0.95) 100%
     ),
-    url("../../../public/images/bgback.jpg") center/cover no-repeat fixed;
+    url("../../../public/images/images.jpeg") center/cover no-repeat fixed;
   position: relative;
   overflow: hidden;
 }
