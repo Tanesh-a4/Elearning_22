@@ -5,17 +5,15 @@ import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 const TeachersHome = () => {
-  const { teachers, fetchTeachers } = UserData();
+  const { teachers, fetchTeachers ,loadingTeachers,errorTeachers } = UserData();
   const { ref, inView } = useInView({
     threshold: 0.2,
     triggerOnce: true
   });
 
-  useEffect(() => {
-    if (teachers.length === 0) {
-      fetchTeachers();
-    }
-  }, [teachers, fetchTeachers]);
+useEffect(() => {
+  if (teachers.length === 0 && !loadingTeachers) fetchTeachers();
+}, [teachers, loadingTeachers, fetchTeachers]);
 
   return (
     <div className="home-teachers-section" ref={ref}>
@@ -30,47 +28,39 @@ const TeachersHome = () => {
         </div>
         
         <div className="home-teachers-grid">
-          {teachers.length > 0 ? (
-            teachers.slice(0, 3).map((teacher, index) => (
-              <div 
-                className={`home-teacher-card ${inView ? 'home-animate-card' : ''}`} 
-                key={teacher._id}
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <div className="home-teacher-avatar">
-                  <div className="home-teacher-avatar-placeholder">
-                    {teacher.name.charAt(0)}
-                  </div>
-                </div>
-                <div className="home-teacher-info">
-                  <h3 className="home-teacher-name">{teacher.name}</h3>
-                  <p className="home-teacher-role">{teacher.role || 'Instructor'}</p>
-                  <div className="home-teacher-stats">
-                    <div className="home-teacher-stat">
-                      <span className="home-stat-value">4.9</span>
-                      <span className="home-stat-label">Rating</span>
-                    </div>
-                    <div className="home-teacher-stat">
-                      <span className="home-stat-value">{Math.floor(Math.random() * 20) + 5}</span>
-                      <span className="home-stat-label">Courses</span>
-                    </div>
-                    <div className="home-teacher-stat">
-                      <span className="home-stat-value">{Math.floor(Math.random() * 10000) + 1000}</span>
-                      <span className="home-stat-label">Students</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="home-no-teachers">
-              <div className="home-no-teachers-icon">
-                <i className="fas fa-user-tie"></i>
-              </div>
-              <p>Our teachers are taking a break. Check back soon!</p>
-            </div>
-          )}
+  {loadingTeachers ? (
+    <div className="home-loading-container">
+      <div className="home-loader"></div>
+      <p>Loading teachers...</p>
+    </div>
+  ) : teachers.length > 0 ? (
+    teachers.slice(0, 3).map((teacher, index) => (
+      <div 
+        className={`home-teacher-card ${inView ? 'home-animate-card' : ''}`} 
+        key={teacher._id}
+        style={{ animationDelay: `${index * 0.2}s` }}
+      >
+        <div className="home-teacher-avatar">
+          <div className="home-teacher-avatar-placeholder">
+            {teacher.name.charAt(0)}
+          </div>
         </div>
+        <div className="home-teacher-info">
+          <h3 className="home-teacher-name">{teacher.name}</h3>
+          <p className="home-teacher-role">{teacher.role || 'Instructor'}</p>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="home-no-teachers">
+      <div className="home-no-teachers-icon">
+        <i className="fas fa-user-tie"></i>
+      </div>
+      <p>Our teachers are taking a break. Check back soon!</p>
+    </div>
+  )}
+</div>
+
         
         <div className={`home-view-all-container ${inView ? 'home-animate-button' : ''}`}>
           <Link to="/teachers" className="home-view-all-teachers">
