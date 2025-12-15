@@ -13,12 +13,13 @@ const CoursesHome = () => {
     threshold: 0.2,
   });
 
-  // Fetch courses on component mount
+  // Fetch courses on component mount only once
   useEffect(() => {
     if (courses.length === 0) {
       fetchCourses();
     }
-  }, [courses.length, fetchCourses]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - fetch only on mount
 
   // Helper function to truncate text
   const truncateText = (text, maxLength) => {
