@@ -12,8 +12,11 @@ const TeachersHome = () => {
   });
 
 useEffect(() => {
-  if (teachers.length === 0 && !loadingTeachers) fetchTeachers();
-}, [teachers, loadingTeachers, fetchTeachers]);
+  if (teachers.length === 0 && !loadingTeachers) {
+    fetchTeachers();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []); // Empty dependency array - fetch only on mount
 
   return (
     <div className="home-teachers-section" ref={ref}>

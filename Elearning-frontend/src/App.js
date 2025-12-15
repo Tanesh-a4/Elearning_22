@@ -29,6 +29,7 @@ import AddCourse from './components/addcourse/AddCourse';
 import Report from './teacher/courses/Report';
 import ChatPage from './pages/chat/ChatPage';
 import ChatButton from './components/ChatButton/ChatButton';
+import NetworkStatusIndicator from './components/NetworkStatusIndicator';
 import { FaComment } from 'react-icons/fa'; // Add this import
 import { useChat } from './context/ChatContext';
 import { ChatProvider } from './context/ChatContext';
@@ -68,6 +69,7 @@ const App = () => {
       <BrowserRouter>
         <ChatProvider> {/* Make sure ChatProvider wraps everything */}
           <Header isAuth={isAuth} />
+          <NetworkStatusIndicator />
           {loading ? (
             <div className="content-container">
               <Loading />

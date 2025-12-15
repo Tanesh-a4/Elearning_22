@@ -15,8 +15,46 @@ export const UserContextProvider = ({ children }) => {
   const [errorTeachers, setErrorTeachers] = useState(null);
   const [teacherDashboardData, setTeacherDashboardData] = useState(null);
   const [teacherCourses, setTeacherCourses] = useState([]);
+  const [isOffline, setIsOffline] = useState(false);
+  const [networkStatus, setNetworkStatus] = useState(navigator.onLine ? 'online' : 'offline');
 
   const controllerRef = useRef(null);
+  const hasFetchedUser = useRef(false);
+  
+  // Retry tracking for teachers
+  const teachersRetryCount = useRef(0);
+  const teachersLastRetry = useRef(0);
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY = 5000; // 5 seconds
+
+  // Network status monitoring  
+  useEffect(() => {
+    const handleOnline = () => {
+      setNetworkStatus('online');
+      setIsOffline(false);
+    };
+    
+    const handleOffline = () => {
+      setNetworkStatus('offline');
+      setIsOffline(true);
+    };
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Helper function to check if error is network-related
+  const isNetworkError = (error) => {
+    return error.code === 'ERR_NETWORK' || 
+           error.code === 'ERR_CONNECTION_REFUSED' || 
+           error.message === 'Network Error' ||
+           !navigator.onLine;
+  };
 
   // ---- LOGIN ----
   const loginUser = async (email, password, navigate, fetchMyCourse) => {
@@ -27,10 +65,17 @@ export const UserContextProvider = ({ children }) => {
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setIsAuth(true);
+      setIsOffline(false);
+      hasFetchedUser.current = false; // Allow fresh fetch after login
       navigate("/");
       fetchMyCourse();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Stay silent, keep loading state active
+      } else {
+        toast.error(error.response?.data?.message || "Login failed");
+      }
       setIsAuth(false);
     } finally {
       setBtnLoading(false);
@@ -44,9 +89,15 @@ export const UserContextProvider = ({ children }) => {
       const { data } = await axios.post(`${server}/api/user/register`, { name, email, password });
       toast.success(data.message);
       localStorage.setItem("activationToken", data.activationToken);
+      setIsOffline(false);
       navigate("/verify");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed");
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Stay silent, keep loading state
+      } else {
+        toast.error(error.response?.data?.message || "Registration failed");
+      }
     } finally {
       setBtnLoading(false);
     }
@@ -60,9 +111,15 @@ export const UserContextProvider = ({ children }) => {
       const { data } = await axios.post(`${server}/api/user/verify`, { otp, activationToken });
       toast.success(data.message);
       localStorage.clear();
+      setIsOffline(false);
       navigate("/login");
     } catch (error) {
-      toast.error(error.response?.data?.message || "OTP verification failed");
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Stay silent, keep loading state
+      } else {
+        toast.error(error.response?.data?.message || "OTP verification failed");
+      }
     } finally {
       setBtnLoading(false);
     }
@@ -70,14 +127,49 @@ export const UserContextProvider = ({ children }) => {
 
   // ---- FETCH USER ----
   const fetchUser = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token || hasFetchedUser.current) {
+      setIsAuth(false);
+      setLoading(false);
+      return;
+    }
+
+    hasFetchedUser.current = true;
+
     try {
       const { data } = await axios.get(`${server}/api/user/me`, {
-        headers: { token: localStorage.getItem("token") },
+        headers: { token },
+        timeout: 10000, // 10 second timeout
       });
       setUser(data.user);
       setIsAuth(true);
-    } catch {
-      setIsAuth(false);
+      setIsOffline(false);
+    } catch (error) {
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Check if we have cached user data
+        const cachedUser = localStorage.getItem("cachedUser");
+        if (cachedUser) {
+          try {
+            const userData = JSON.parse(cachedUser);
+            setUser(userData);
+            setIsAuth(true);
+          } catch (e) {
+            setIsAuth(false);
+          }
+        } else {
+          setIsAuth(false);
+        }
+      } else {
+        setIsOffline(false);
+        setIsAuth(false);
+        // Clear invalid token
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("cachedUser");
+        }
+      }
+      hasFetchedUser.current = false; // Allow retry
     } finally {
       setLoading(false);
     }
@@ -90,7 +182,6 @@ export const UserContextProvider = ({ children }) => {
     setLoadingTeachers(true);
     setErrorTeachers(null);
 
-    // cancel previous request if any
     if (controllerRef.current) controllerRef.current.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
@@ -100,29 +191,39 @@ export const UserContextProvider = ({ children }) => {
       const response = await axios.get(`${server}/api/user/teachers`, {
         headers: { token },
         signal: controller.signal,
-        timeout: 7000, // safety timeout
+        timeout: 10000,
       });
 
       if (Array.isArray(response?.data?.teachers)) {
         setTeachers(response.data.teachers);
+        setIsOffline(false);
+        // Cache teachers data
+        localStorage.setItem("cachedTeachers", JSON.stringify(response.data.teachers));
       } else {
-        console.warn("Unexpected response structure", response.data);
         setTeachers([]);
       }
     } catch (error) {
       if (axios.isCancel(error) || error.name === "CanceledError") return;
-      console.warn("Teacher fetch failed:", error.message);
-
-      if (retryCount < 3) {
-        const delay = 1000 * Math.pow(2, retryCount);
-        console.log(`Retrying fetchTeachers in ${delay / 1000}s...`);
-        await new Promise((res) => setTimeout(res, delay));
-        return fetchTeachers(retryCount + 1);
+      
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Use cached teachers if available
+        const cachedTeachers = localStorage.getItem("cachedTeachers");
+        if (cachedTeachers) {
+          try {
+            const teachersData = JSON.parse(cachedTeachers);
+            setTeachers(teachersData);
+          } catch (e) {
+            setTeachers([]);
+          }
+        } else {
+          setTeachers([]);
+        }
+        // Don't set error message, keep loading state
+      } else {
+        // Non-network errors - no automatic retry
+        setTeachers([]);
       }
-
-      setErrorTeachers("Unable to fetch teachers right now.");
-      // Gracefully handle with toast *once*
-      if (!retryCount) toast("Server unavailable. Showing loading state...");
     } finally {
       setLoadingTeachers(false);
     }
@@ -134,10 +235,17 @@ export const UserContextProvider = ({ children }) => {
     try {
       const { data } = await axios.get(`${server}/api/teacher/${user._id}/dashboard`, {
         headers: { token: localStorage.getItem("token") },
+        timeout: 10000,
       });
       setTeacherDashboardData(data.data);
+      setIsOffline(false);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to fetch dashboard data");
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        // Stay silent, keep existing data
+      } else {
+        toast.error(error.response?.data?.message || "Failed to fetch dashboard data");
+      }
     }
   }, [user]);
 
@@ -148,14 +256,39 @@ export const UserContextProvider = ({ children }) => {
     try {
       const { data } = await axios.get(`${server}/api/teacher/${user._id}/courses`, {
         headers: { token: localStorage.getItem("token") },
+        timeout: 10000,
       });
       setTeacherCourses(data.data || []);
+      setIsOffline(false);
     } catch (error) {
       console.error("Error fetching teacher courses:", error);
+      if (isNetworkError(error)) {
+        setIsOffline(true);
+        setTeacherCourses([]); // Show empty state when offline
+      }
     } finally {
       setLoading(false);
     }
   }, [user]);
+
+  // ---- LOGOUT ----
+  const logoutUser = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("cachedUser");
+    localStorage.removeItem("cachedTeachers");
+    setUser(null);
+    setIsAuth(false);
+    setIsOffline(false);
+    hasFetchedUser.current = false;
+    toast.success("Logged out successfully");
+  };
+
+  // Cache user data when user changes
+  useEffect(() => {
+    if (user && isAuth) {
+      localStorage.setItem("cachedUser", JSON.stringify(user));
+    }
+  }, [user, isAuth]);
 
   // ---- INITIAL LOAD ----
   useEffect(() => {
@@ -164,7 +297,8 @@ export const UserContextProvider = ({ children }) => {
     return () => {
       if (controllerRef.current) controllerRef.current.abort();
     };
-  }, [fetchUser, fetchTeachers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency - run only once on mount
 
   return (
     <userContext.Provider
@@ -174,6 +308,7 @@ export const UserContextProvider = ({ children }) => {
         isAuth,
         setIsAuth,
         loginUser,
+        logoutUser,
         btnLoading,
         loading,
         registerUser,
@@ -186,6 +321,8 @@ export const UserContextProvider = ({ children }) => {
         fetchTeacherCourses,
         loadingTeachers,
         errorTeachers,
+        isOffline, // Expose offline status
+        networkStatus, // Expose network status
       }}
     >
       {children}

@@ -8,7 +8,8 @@ import { CourseContextProvider } from './context/CourseContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-export const server = "http://localhost:5000";
+// Import server configuration from config file
+export { server } from './config.js';
 
 function renderApp() {
   const rootElement = document.getElementById('root');
