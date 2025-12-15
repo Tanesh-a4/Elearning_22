@@ -62,6 +62,16 @@ jobs:
       working-directory: Elearning-frontend
       run: npm install @testing-library/dom --save-dev
 
+    - name: Verify server URL in index.js (only on main branch)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        if grep -q 'export const server = "https://elearning-22.onrender.com";' Elearning-frontend/src/index.js; then
+          echo "✅ Server URL is correct."
+        else
+          echo "❌ Server URL is incorrect!"
+          exit 1
+        fi
+
 
     
 
